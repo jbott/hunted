@@ -3,8 +3,8 @@ DEFINE_BASECLASS("player_default")
 
 local PLAYER = {}
 
-PLAYER.DuckSpeed			= 0.1		-- How fast to go from not ducking, to ducking
-PLAYER.UnDuckSpeed			= 0.1		-- How fast to go from ducking, to not ducking
+PLAYER.DuckSpeed			= 0.3		-- How fast to go from not ducking, to ducking
+PLAYER.UnDuckSpeed			= 0.3		-- How fast to go from ducking, to not ducking
 
 --
 -- Creates a Taunt Camera
@@ -18,6 +18,19 @@ PLAYER.RunSpeed				= PLAYER.WalkSpeed * 1.5
 
 PLAYER.TeammateNoCollide 	= false
 PLAYER.AvoidPlayers			= false
+
+
+function PLAYER:SlowSpeed()
+	self.Player:SetCanWalk(false)
+	self.Player:SetWalkSpeed(PLAYER.WalkSpeed * 0.5)
+	self.Player:SetRunSpeed(PLAYER.WalkSpeed * 0.5)
+end
+
+function PLAYER:ResetSpeed()
+	self.Player:SetCanWalk(true)
+	self.Player:SetWalkSpeed(PLAYER.WalkSpeed)
+	self.Player:SetRunSpeed(PLAYER.RunSpeed)
+end
 
 function PLAYER:Loadout()
 	self.Player:RemoveAllAmmo()

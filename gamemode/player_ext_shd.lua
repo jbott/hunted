@@ -11,3 +11,11 @@ end
 function plymeta:NightVisionIsOn()
 	return self:GetNWBool("NightVision", false)
 end
+
+function plymeta:SlowWalk(on)
+	if on then
+		player_manager.RunClass(self, "SlowSpeed")
+	else
+		player_manager.RunClass(self, "ResetSpeed")
+	end
+end

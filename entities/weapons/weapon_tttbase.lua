@@ -135,6 +135,7 @@ if CLIENT then
 
    function SWEP:DrawHUD()
       local client = LocalPlayer()
+
       if disable_crosshair:GetBool() or (not IsValid(client)) then return end
 
       local sights = (not self.NoSights) and self:GetIronsights()
@@ -398,6 +399,9 @@ function SWEP:Initialize()
 end
 
 function SWEP:Think()
+   if SERVER and (not self.NoSights) then
+      self.Owner:SlowWalk(self:GetIronsights())
+   end
 end
 
 function SWEP:DyingShot()

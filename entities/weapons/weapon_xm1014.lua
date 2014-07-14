@@ -133,6 +133,7 @@ function SWEP:CanPrimaryAttack()
 end
 
 function SWEP:Think()
+   self.BaseClass.Think(self)
    if self.dt.reloading and IsFirstTimePredicted() then
       if self.Owner:KeyDown(IN_ATTACK) then
          self:FinishReload()
@@ -148,7 +149,7 @@ function SWEP:Think()
          else
             self:FinishReload()
          end
-         return            
+         return
       end
    end
 end
