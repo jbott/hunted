@@ -30,7 +30,7 @@ hook.Add("Think", "cl_nightvision_think", function()
 	if LocalPlayer():NightVisionIsOn() then
 		local light = DynamicLight(LocalPlayer():EntIndex())
 		if (light) then
-			light.Pos = LocalPlayer():GetPos() + Vector(0,0,30) -- 30 units up
+			light.Pos = LocalPlayer():GetPos() + LocalPlayer():GetCurrentViewOffset()
 			light.r = 80
 			light.g = 255
 			light.b = 80
