@@ -4,6 +4,7 @@ GM.Email   = "snowleopardjb@gmail.com"
 GM.Website = "N/A"
 
 include("player_class/player_hunted_base.lua")
+include("player_ext_shd.lua")
 
 --- Teams ---
 TEAM_HUNTER = 1
