@@ -1,5 +1,3 @@
-AddCSLuaFile()
-
 local colormod = {}
 colormod[ "$pp_colour_brightness" ] = 0
 colormod[ "$pp_colour_colour" ] = 1

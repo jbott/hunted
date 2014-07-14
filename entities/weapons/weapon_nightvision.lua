@@ -25,13 +25,13 @@ SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
 
 function SWEP:Initialize()
-	self:SetHoldType("slam")
-
-	if (CLIENT) then return end
-
+	self:SetHoldType("normal")
 end
 
 function SWEP:PrimaryAttack()
-	self.Owner:NightVision(!self.Owner:NightVisionIsOn())
-	self:SetNextPrimaryFire( CurTime() + 0.3 )
+	if (SERVER) then
+		self.Owner:NightVision(!self.Owner:NightVisionIsOn())
+	end
+
+	self:SetNextPrimaryFire(CurTime() + 0.3)
 end
