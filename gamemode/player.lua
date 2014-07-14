@@ -46,6 +46,6 @@ function GM:PlayerNoClip( ply, desiredState )
 end
 
 function GM:PlayerFootstep(ply, pos, foot, snd, volume, filter)
-   sound.Play(snd, pos, 160)
+   sound.Play(snd, pos, 130)
    return true
 end
