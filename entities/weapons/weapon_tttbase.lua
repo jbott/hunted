@@ -229,6 +229,12 @@ function SWEP:ShootBullet( dmg, recoil, numbul, cone )
    self:SendWeaponAnim(self.PrimaryAnim)
 
    self.Owner:MuzzleFlash()
+   -- Dynamiclight on fire
+   local effectData = EffectData()
+   effectData:SetEntity(self)
+   effectData:SetOrigin(self.Owner:GetPos() + self.Owner:GetCurrentViewOffset() + self.Owner:GetForward() * 20)
+   util.Effect("muzzle_flash_dynamiclight", effectData)
+
    self.Owner:SetAnimation( PLAYER_ATTACK1 )
 
    if not IsFirstTimePredicted() then return end
