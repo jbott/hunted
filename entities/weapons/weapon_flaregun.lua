@@ -6,7 +6,7 @@ SWEP.HoldType = "pistol"
 if CLIENT then
 
    SWEP.PrintName = "Flare Gun"
-   SWEP.Slot = 1
+   SWEP.Slot = 0
    SWEP.SlotPos = 1
 
    SWEP.ViewModelFOV  = 54
@@ -41,38 +41,16 @@ function SWEP:ShootFlare()
 
    if ( CLIENT ) then return end
 
-   -- Create ents and bail if either are not valid
-   local ent = ents.Create( "prop_physics" )
-   local flare = ents.Create("env_flare")
-   if (!IsValid( ent ) or !IsValid(flare)) then return end
+   flare = ents.Create("env_flare")
+   if !IsValid(flare) then return end
 
-   ent:SetModel("models/props_junk/flare.mdl" )
-   ent:SetPos( self.Owner:EyePos() + ( self.Owner:GetAimVector() * 20 ) )
-   ent:Spawn()
-
-   -- Set position and stuff
-   flare:SetPos(ent:GetPos() + Vector(0, 0, 5))
-   flare:SetAngles(Angle(90, 0, 0))
-   flare:SetParent(ent)
-   flare:SetKeyValue("duration", tostring(self.FlareDuration))
-   flare:SetKeyValue("scale", "10")
+   flare:SetPos(self.Owner:EyePos() + ( self.Owner:GetAimVector() * 10 ))
+   flare:SetAngles(self.Owner:EyeAngles())
+   flare:SetKeyValue("spawnflags", 4) -- Infinite
+   flare:SetKeyValue("scale", 10)
    flare:Spawn()
+   flare:Fire("Launch", 2000, 0)
 
-   --
-   -- Get physics object and push flare
-   local phys = ent:GetPhysicsObject()
-   if (  !IsValid( phys ) ) then
-      ent:Remove()
-      flare:Remove()
-      return
-   end
-
-   phys:AddGameFlag(FVPHYSICS_NO_PLAYER_PICKUP) -- This disables the default flare
-   phys:SetMaterial("rubber")
-   phys:SetMass(60)
-   phys:ApplyForceCenter(self.Owner:GetAimVector() * 90000)
-
-   ent:Fire("Kill", nil, self.FlareDuration)
    flare:Fire("Kill", nil, self.FlareDuration)
 end
 
