@@ -21,7 +21,7 @@ SWEP.WeaponID = AMMO_DEAGLE
 
 SWEP.Primary.Ammo       = "CombineCannon"
 SWEP.Primary.Recoil			= 6
-SWEP.Primary.Damage = 37
+SWEP.Primary.Damage = 43
 SWEP.Primary.Delay = 0.6
 SWEP.Primary.Cone = 0.02
 SWEP.Primary.ClipSize = 8
