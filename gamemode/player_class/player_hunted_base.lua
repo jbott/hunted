@@ -44,6 +44,7 @@ function PLAYER:Loadout()
 	self.Player:Give("weapon_scout")
 	self.Player:Give("weapon_xm1014")
 	self.Player:Give("weapon_nightvision")
+	self.Player:Give("weapon_flaregun")
 
 	self.Player:GiveAmmo(256, "CombineCannon", true)
 	self.Player:GiveAmmo(256, "Pistol", true)
