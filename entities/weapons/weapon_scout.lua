@@ -21,7 +21,8 @@ SWEP.Primary.Recoil         = 7
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "StriderMinigun"
 SWEP.Primary.Damage = 50
-SWEP.Primary.Cone = 0.005
+SWEP.Primary.Cone = 0.1
+SWEP.Primary.IronsightsCone = 0.005
 SWEP.Primary.ClipSize = 10
 SWEP.Primary.ClipMax = 20 -- keep mirrored to ammo
 SWEP.Primary.DefaultClip = 10
@@ -43,6 +44,11 @@ SWEP.Secondary.Sound = Sound("Default.Zoom")
 
 SWEP.IronSightsPos      = Vector( 5, -15, -2 )
 SWEP.IronSightsAng      = Vector( 2.6, 1.37, 3.5 )
+
+function SWEP:GetPrimaryCone()
+   return self:GetIronsights() and self.Primary.IronsightsCone or self.Primary.Cone
+end
+
 
 function SWEP:SetZoom(state)
     if CLIENT then
