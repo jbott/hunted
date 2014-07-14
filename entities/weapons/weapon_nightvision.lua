@@ -6,6 +6,7 @@ SWEP.DrawWeaponInfoBox  = false
 
 SWEP.Spawnable			= true
 SWEP.UseHands			= true
+SWEP.DrawAmmo 			= false
 
 SWEP.ViewModel			= "models/weapons/c_arms_citizen.mdl"
 SWEP.WorldModel			= ""
@@ -34,4 +35,26 @@ function SWEP:PrimaryAttack()
 	end
 
 	self:SetNextPrimaryFire(CurTime() + 0.3)
+end
+
+function SWEP:PreDrawViewModel( vm, wep, ply )
+        vm:SetMaterial( "engine/occlusionproxy" ) -- Hide that view model with hacky material
+end
+
+function SWEP:OnRemove()
+        if ( IsValid( self.Owner ) && CLIENT && self.Owner:IsPlayer() ) then
+                local vm = self.Owner:GetViewModel()
+                if ( IsValid( vm ) ) then vm:SetMaterial( "" ) end
+        end
+end
+
+function SWEP:Holster( wep )
+        self:OnRemove()
+        return true
+end
+
+function SWEP:Deploy()
+        local vm = self.Owner:GetViewModel()
+        vm:SendViewModelMatchingSequence( vm:LookupSequence( "fists_draw" ) )
+        return true
 end
