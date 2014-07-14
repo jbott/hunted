@@ -72,7 +72,7 @@ function PLAYER:Spawn()
 	self.Player:SetViewOffsetDucked(Vector(0.0, 0.0, 40.0))
 
 	-- Set Player Color
-	self.Player:SetPlayerColor(Vector(255, 0, 0))
+	self.Player:SetPlayerColor(Vector(0, 255, 0))
 end
 
 --
