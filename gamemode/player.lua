@@ -27,8 +27,6 @@ function GM:PlayerSpawn(ply)
    -- Set player class
    player_manager.SetPlayerClass(ply, "player_hunted_base")
 
-   ply:SetupHands()
-
    player_manager.OnPlayerSpawn(ply)
    player_manager.RunClass(ply, "Spawn")
 
@@ -37,6 +35,8 @@ function GM:PlayerSpawn(ply)
    
    -- Set player model
    hook.Call("PlayerSetModel", GAMEMODE, ply)
+
+   ply:SetupHands()
 end
 
 -- Disable NoClipping
