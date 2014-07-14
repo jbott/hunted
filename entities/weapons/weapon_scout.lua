@@ -1,5 +1,6 @@
 AddCSLuaFile()
-resource.AddFile("materials/vgui/hunted/icon_scout")
+resource.AddFile("materials/vgui/hunted/icon_scout.vmt")
+resource.AddFile("materials/sprites/scope.vmt")
 
 SWEP.HoldType           = "ar2"
 

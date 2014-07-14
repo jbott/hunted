@@ -1,5 +1,5 @@
 AddCSLuaFile()
-resource.AddFile("materials/vgui/hunted/icon_deagle")
+resource.AddFile("materials/vgui/hunted/icon_deagle.vmt")
 
 SWEP.HoldType			= "pistol"
 

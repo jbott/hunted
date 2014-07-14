@@ -1,5 +1,5 @@
 AddCSLuaFile()
-resource.AddFile("materials/vgui/hunted/icon_xm1014")
+resource.AddFile("materials/vgui/hunted/icon_xm1014.vmt")
 
 SWEP.HoldType			= "shotgun"
 
@@ -18,8 +18,8 @@ SWEP.Kind = WEAPON_HEAVY
 SWEP.WeaponID = AMMO_SHOTGUN
 
 SWEP.Primary.Ammo = "Buckshot"
-SWEP.Primary.Damage = 11
-SWEP.Primary.Cone = 0.085
+SWEP.Primary.Damage = 8
+SWEP.Primary.Cone = 0.105
 SWEP.Primary.Delay = 0.8
 SWEP.Primary.ClipSize = 8
 SWEP.Primary.ClipMax = 24

@@ -1,5 +1,5 @@
 AddCSLuaFile()
-resource.AddFile("materials/vgui/hunted/icon_m249")
+resource.AddFile("materials/vgui/hunted/icon_m249.vmt")
 
 SWEP.HoldType			= "crossbow"
 
@@ -24,7 +24,7 @@ SWEP.Kind = WEAPON_HEAVY
 SWEP.WeaponID = AMMO_M249
 
 
-SWEP.Primary.Damage = 16
+SWEP.Primary.Damage = 19
 SWEP.Primary.Delay = 0.06
 SWEP.Primary.Cone = 0.09
 SWEP.Primary.ClipSize = 150
