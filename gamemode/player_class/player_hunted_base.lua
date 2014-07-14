@@ -22,6 +22,7 @@ PLAYER.AvoidPlayers			= false
 function PLAYER:Loadout()
 	self.Player:RemoveAllAmmo()
 
+	self.Player:Give("weapon_ak47")
 	self.Player:Give("weapon_deagle")
 	self.Player:Give("weapon_fiveseven")
 	self.Player:Give("weapon_m16")
