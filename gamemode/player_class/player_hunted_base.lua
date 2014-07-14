@@ -52,6 +52,7 @@ function PLAYER:Loadout()
 	self.Player:GiveAmmo(256, "smg1", true)
 	self.Player:GiveAmmo(256, "StriderMinigun", true)
 	self.Player:GiveAmmo(256, "Buckshot", true)
+	self.Player:GiveAmmo(9, "AR2AltFire", true)
 
 	self.Player:SwitchToDefaultWeapon()
 end
