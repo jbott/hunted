@@ -68,13 +68,9 @@ function PLAYER:Spawn()
 
 	-- Adjust player duck height to be more reasonable
 	self.Player:SetViewOffsetDucked(Vector(0.0, 0.0, 40.0))
-	
-	--[[local col = self.Player:GetInfo( "cl_playercolor" )
-	self.Player:SetPlayerColor( Vector( col ) )
 
-	local col = self.Player:GetInfo( "cl_weaponcolor" )
-	self.Player:SetWeaponColor( Vector( col ) )
-	--]]
+	-- Set Player Color
+	self.Player:SetPlayerColor(Vector(255, 0, 0))
 end
 
 --
