@@ -26,7 +26,6 @@ hook.Add("RenderScreenspaceEffects", "cl_nightvision_colors", function()
 	end
 end)
 
-print("reload")
 hook.Add("Think", "cl_nightvision_think", function()
 	if LocalPlayer():NightVisionIsOn() then
 		local light = DynamicLight(LocalPlayer():EntIndex())
