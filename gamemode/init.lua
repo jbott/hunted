@@ -21,7 +21,7 @@ function GM:PlayerSelectSpawn( pl )
 	local sel = nil
 	repeat
 		sel = table.Random(spawns)
-	until Vector(-3504, -3529, 0):Distance(sel:GetPos()) < 4000
+	until Vector(-3504, -3529, 0):Distance(sel:GetPos()) < 1000
 
 	return sel
 end
