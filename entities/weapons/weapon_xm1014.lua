@@ -24,10 +24,11 @@ SWEP.ViewModelFOV  = 54
 
 --- Primary ---
 SWEP.Primary.Automatic   = true
-SWEP.Primary.Delay       = 0.5
+SWEP.Primary.NumShots    = 9
+SWEP.Primary.Delay       = 0.6
 SWEP.Primary.Recoil      = 8
-SWEP.Primary.Damage      = 40
-SWEP.Primary.Cone        = 0.03
+SWEP.Primary.Damage      = 7
+SWEP.Primary.Cone        = 0.02
 
 SWEP.Primary.Ammo        = "Buckshot"
 SWEP.Primary.ClipSize    = 6
@@ -54,7 +55,7 @@ function SWEP:Reload()
    if not IsFirstTimePredicted() then return end
    
    if self:Clip1() < self.Primary.ClipSize and self.Owner:GetAmmoCount( self.Primary.Ammo ) > 0 then
-      
+
       if self:StartReload() then
          return
       end

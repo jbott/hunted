@@ -22,9 +22,9 @@ SWEP.ViewModelFOV  = 64
 
 --- Primary ---
 SWEP.Primary.Automatic   = true
-SWEP.Primary.Delay       = 0.2
+SWEP.Primary.Delay       = 0.1
 SWEP.Primary.Recoil      = 1.6
-SWEP.Primary.Damage      = 22
+SWEP.Primary.Damage      = 18
 SWEP.Primary.Cone        = 0.018
 
 SWEP.Primary.Ammo        = "AirboatGun"

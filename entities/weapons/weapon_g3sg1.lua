@@ -30,7 +30,7 @@ SWEP.Primary.Automatic      = true
 SWEP.Primary.Delay          = 0.7
 SWEP.Primary.Recoil         = 4
 SWEP.Primary.Damage         = 50
-SWEP.Primary.Cone           = 0.02
+SWEP.Primary.Cone           = 0.2
 SWEP.Primary.IronsightsCone = 0.002
 
 SWEP.Primary.Ammo           = "StriderMinigun"

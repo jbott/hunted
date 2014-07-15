@@ -21,14 +21,14 @@ SWEP.ViewModelFlip = false
 SWEP.ViewModelFOV  = 54
 
 --- Primary ---
-SWEP.Primary.Automatic   = true
+SWEP.Primary.Automatic   = false
 SWEP.Primary.Delay       = 0.3
 SWEP.Primary.Recoil      = 1.9
-SWEP.Primary.Damage      = 26
+SWEP.Primary.Damage      = 30
 SWEP.Primary.Cone        = 0.025
 
 SWEP.Primary.Ammo        = "StriderMinigun"
-SWEP.Primary.ClipSize    = 20
+SWEP.Primary.ClipSize    = 10
 SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize
 
 SWEP.Primary.Sound       = Sound("Weapon_AK47.Single")

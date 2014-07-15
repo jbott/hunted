@@ -24,14 +24,14 @@ SWEP.ViewModelFOV  = 54
 
 --- Primary ---
 SWEP.Primary.Automatic   = true
-SWEP.Primary.NumShots    = 8
+SWEP.Primary.NumShots    = 9
 SWEP.Primary.Delay       = 1.0
 SWEP.Primary.Recoil      = 6
 SWEP.Primary.Damage      = 8
 SWEP.Primary.Cone        = 0.12
 
 SWEP.Primary.Ammo        = "Buckshot"
-SWEP.Primary.ClipSize    = 4
+SWEP.Primary.ClipSize    = 8
 SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize
 
 SWEP.Primary.Sound       = Sound("Weapon_M3.Single")

@@ -12,6 +12,7 @@ if (CLIENT) then
   SWEP.WepSelectIcon    = surface.GetTextureID("vgui/hunted/icon_deagle")
 end
 
+SWEP.DeploySpeed        = 3
 SWEP.HeadshotMultiplier = 4
 
 --- View ---
@@ -26,7 +27,7 @@ SWEP.ViewModelFOV  = 54
 SWEP.Primary.Automatic   = false
 SWEP.Primary.Delay       = 0.4
 SWEP.Primary.Recoil      = 6
-SWEP.Primary.Damage      = 45
+SWEP.Primary.Damage      = 35
 SWEP.Primary.Cone        = 0.02
 
 SWEP.Primary.Ammo        = "CombineCannon"
