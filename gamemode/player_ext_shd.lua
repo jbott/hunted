@@ -10,6 +10,10 @@ if SERVER then
 	function plymeta:SetNightVisionSize(size)
 		self:SetNWInt("NightVisionSize", size)
 	end
+
+	function plymeta:SetClass(class)
+		self:SetNWString("Class", class)
+	end
 end
 
 function plymeta:NightVisionIsOn()
@@ -26,4 +30,8 @@ function plymeta:SlowWalk(on)
 	else
 		player_manager.RunClass(self, "SpeedMultiplier", 1)
 	end
+end
+
+function plymeta:Class()
+	return self:GetNWString("Class", CLASS_UNASSIGNED)
 end

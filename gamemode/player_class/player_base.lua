@@ -1,8 +1,10 @@
 AddCSLuaFile()
 DEFINE_BASECLASS("player_default")
 
+---- Config ----
 local PLAYER = {}
 PLAYER.DisplayName       = "Base Class"
+PLAYER.Desc              = "Don't pick this class or the universe will collapse into the singularity!"
 
 -- Slower walk speeds
 PLAYER.WalkSpeed         = 150
@@ -13,11 +15,48 @@ PLAYER.TeammateNoCollide = false
 PLAYER.AvoidPlayers      = false
 
 PLAYER.Model             = "models/player/kleiner.mdl"
+PLAYER.Color             = Vector(1, 1, 1)
+PLAYER.NightVisionSize   = 500
 
---
--- Creates a Taunt Camera
---
-PLAYER.TauntCam = TauntCamera()
+PLAYER.Weapons = {
+	"weapon_nightvision"
+}
+
+PLAYER.Ammo = {}
+
+---- Functions ----
+function PLAYER:GetDisplayName()
+	return self.DisplayName
+end
+
+function PLAYER:GetDesc()
+	return self.Desc
+end
+
+function PLAYER:Spawn()
+	self.Player:SetNightVisionSize(self.NightVisionSize)
+	-- Adjust player duck height to be more reasonable
+	self.Player:SetViewOffsetDucked(Vector(0.0, 0.0, 40.0))
+end
+
+-- Load ammo from tables
+function PLAYER:Loadout()
+	for _,wep in pairs(self.Weapons) do
+		self.Player:Give(tostring(wep))
+	end
+
+	for _,ammo in pairs(self.Ammo) do
+		self.Player:GiveAmmo(tonumber(ammo[2]), tostring(ammo[1]))
+	end
+
+	self.Player:SwitchToDefaultWeapon()
+end
+
+function PLAYER:SetModel()
+	util.PrecacheModel(self.Model)
+	self.Player:SetModel(self.Model)
+	self.Player:SetColor(self.Color)
+end
 
 function PLAYER:SpeedMultiplier(val)
 	self.Player:SetCanWalk(val >= 1)
@@ -25,82 +64,22 @@ function PLAYER:SpeedMultiplier(val)
 	self.Player:SetRunSpeed(((val < 1) and self.WalkSpeed or self.RunSpeed) * val)
 end
 
-function PLAYER:Loadout()
+--- Taunts - From player_sandbox ---
+PLAYER.TauntCam = TauntCamera() -- Creates a Taunt Camera
 
-	--[[
-	self.Player:Give("weapon_ak47")
-	self.Player:Give("weapon_galil")
-	self.Player:Give("weapon_tmp")
-	self.Player:Give("weapon_deagle")
-	self.Player:Give("weapon_p228")
-	--self.Player:Give("weapon_fiveseven")
-	self.Player:Give("weapon_m16")
-	--self.Player:Give("weapon_m249")
-	--self.Player:Give("weapon_mac10")
-	self.Player:Give("weapon_awp")
-	self.Player:Give("weapon_g3sg1")
-	--self.Player:Give("weapon_scout")
-	self.Player:Give("weapon_xm1014")
-	self.Player:Give("weapon_m3")
-
-	self.Player:Give("weapon_flaregun")
-
-	self.Player:GiveAmmo(256, "CombineCannon", true)
-	self.Player:GiveAmmo(256, "Pistol", true)
-	self.Player:GiveAmmo(256, "AirboatGun", true)
-	self.Player:GiveAmmo(256, "smg1", true)
-	self.Player:GiveAmmo(256, "StriderMinigun", true)
-	self.Player:GiveAmmo(256, "Buckshot", true)
-	self.Player:GiveAmmo(256, "357", true)
-	self.Player:GiveAmmo(9, "AR2AltFire", true)
-	--]]
-	self.Player:Give("weapon_nightvision")
-	self.Player:SwitchToDefaultWeapon()
-end
-
-function PLAYER:Spawn()
-	self.Player:SetNightVisionSize(500)
-	-- Adjust player duck height to be more reasonable
-	self.Player:SetViewOffsetDucked(Vector(0.0, 0.0, 40.0))
-end
-
-function PLAYER:SetModel()
-	util.PrecacheModel(self.Model)
-	self.Player:SetModel(self.Model)
-end
-
---
--- Return true to draw local (thirdperson) camera - false to prevent - nothing to use default behaviour
---
 function PLAYER:ShouldDrawLocal()
-
 	if ( self.TauntCam:ShouldDrawLocalPlayer( self.Player, self.Player:IsPlayingTaunt() ) ) then return true end
-
 end
 
---
--- Allow player class to create move
---
 function PLAYER:CreateMove( cmd )
-
 	if ( self.TauntCam:CreateMove( cmd, self.Player, self.Player:IsPlayingTaunt() ) ) then return true end
-
 end
 
---
--- Allow changing the player's view
---
 function PLAYER:CalcView( view )
-
 	if ( self.TauntCam:CalcView( view, self.Player, self.Player:IsPlayingTaunt() ) ) then return true end
-
-	-- Your stuff here
-
 end
 
---
--- Reproduces the jump boost from HL2 singleplayer
---
+--- Reproduces the jump boost from HL2 singleplayer - From player_sandbox ---
 local JUMPING
 
 function PLAYER:StartMove( move )
