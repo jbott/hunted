@@ -4,7 +4,7 @@ DEFINE_BASECLASS("player_base")
 local PLAYER = {}
 PLAYER.DisplayName = "Hunter"
 PLAYER.Model       = "models/player/Combine_Soldier.mdl"
-PLAYER.Color       = Vector(0, 255, 0)
+PLAYER.Color       = Vector(0, 1, 0)
 
 PLAYER.Weapons = {
 	"weapon_flaregun"

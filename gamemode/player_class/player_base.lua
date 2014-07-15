@@ -55,7 +55,7 @@ end
 function PLAYER:SetModel()
 	util.PrecacheModel(self.Model)
 	self.Player:SetModel(self.Model)
-	self.Player:SetColor(self.Color)
+	self.Player:SetPlayerColor(self.Color)
 end
 
 function PLAYER:SpeedMultiplier(val)
