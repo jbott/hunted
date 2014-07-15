@@ -64,7 +64,10 @@ end
 
 function changeTeam(ply, cmd, args)
    local newTeam =  tonumber(args[1])
-   if (!team.Valid(newTeam)) then ply:PrintMessage(HUD_PRINTCONSOLE, "Invalid Team " .. args[1]) end
+   if (!team.Valid(newTeam)) then
+      ply:PrintMessage(HUD_PRINTCONSOLE, "Invalid Team " .. args[1])
+      return
+   end
    print(ply:Name() .. " changed to team " .. team.GetName(newTeam))
    ply:SetTeam(newTeam)
    ply:SetClass(CLASS_UNDEFINED)
@@ -79,7 +82,10 @@ end
 
 function changeClass(ply, cmd, args)
    local newClass = tostring(args[1])
-   if (!CLASS.isValid(newTeam)) then ply:PrintMessage(HUD_PRINTCONSOLE, "Invalid Class " .. args[1]) end
+   if (!CLASS.isValid(newClass)) then
+      ply:PrintMessage(HUD_PRINTCONSOLE, "Invalid Class " .. args[1])
+      return
+   end
    print(ply:Name() .. " changed to class " .. CLASS.GetClassName(newClass))
    ply:SetClass(newClass)
    ply:KillSilent()
