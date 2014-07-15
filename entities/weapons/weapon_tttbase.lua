@@ -122,6 +122,9 @@ SWEP.IsDropped = false
 
 SWEP.DeploySpeed = 1.4
 
+SWEP.MuzzleFlashSize = 250
+SWEP.MuzzleFlashBrightness = 4
+
 SWEP.PrimaryAnim = ACT_VM_PRIMARYATTACK
 SWEP.ReloadAnim = ACT_VM_RELOAD
 
@@ -232,6 +235,8 @@ function SWEP:ShootBullet( dmg, recoil, numbul, cone )
    -- Dynamiclight on fire
    local effectData = EffectData()
    effectData:SetEntity(self)
+   effectData:SetRadius(self.MuzzleFlashSize)
+   effectData:SetScale(self.MuzzleFlashBrightness)
    effectData:SetOrigin(self.Owner:GetPos() + self.Owner:GetCurrentViewOffset() + self.Owner:GetForward() * 20)
    util.Effect("muzzle_flash_dynamiclight", effectData)
 

@@ -8,8 +8,8 @@ function EFFECT:Init( data )
          light.r = 255
          light.g = 191
          light.b = 39
-         light.Brightness = 4
-         light.Size = 250
+         light.Brightness = data:GetScale()
+         light.Size = data:GetRadius()
          light.Decay = 0.01
          light.DieTime = CurTime() + 0.001
          light.Style = 0
