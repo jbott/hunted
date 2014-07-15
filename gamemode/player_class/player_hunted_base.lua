@@ -37,6 +37,7 @@ function PLAYER:Loadout()
 
 	self.Player:Give("weapon_ak47")
 	self.Player:Give("weapon_galil")
+	self.Player:Give("weapon_tmp")
 	self.Player:Give("weapon_deagle")
 	self.Player:Give("weapon_p228")
 	--self.Player:Give("weapon_fiveseven")
