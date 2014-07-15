@@ -12,7 +12,7 @@ if (CLIENT) then
   SWEP.WepSelectIcon    = surface.GetTextureID("vgui/hunted/icon_deagle")
 end
 
-SWEP.DeploySpeed        = 3
+SWEP.DeploySpeed        = 1.5
 SWEP.HeadshotMultiplier = 4
 
 --- View ---

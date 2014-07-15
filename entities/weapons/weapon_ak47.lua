@@ -22,10 +22,10 @@ SWEP.ViewModelFOV  = 54
 
 --- Primary ---
 SWEP.Primary.Automatic   = false
-SWEP.Primary.Delay       = 0.3
+SWEP.Primary.Delay       = 0.2
 SWEP.Primary.Recoil      = 1.9
 SWEP.Primary.Damage      = 30
-SWEP.Primary.Cone        = 0.025
+SWEP.Primary.Cone        = 0.016
 
 SWEP.Primary.Ammo        = "StriderMinigun"
 SWEP.Primary.ClipSize    = 10

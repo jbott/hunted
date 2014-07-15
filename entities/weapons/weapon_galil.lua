@@ -22,13 +22,13 @@ SWEP.ViewModelFOV  = 54
 
 --- Primary ---
 SWEP.Primary.Automatic   = true
-SWEP.Primary.Delay       = 0.2
+SWEP.Primary.Delay       = 0.15
 SWEP.Primary.Recoil      = 1.5
 SWEP.Primary.Damage      = 22
 SWEP.Primary.Cone        = 0.02
 
 SWEP.Primary.Ammo        = "AirboatGun"
-SWEP.Primary.ClipSize    = 20
+SWEP.Primary.ClipSize    = 25
 SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize
 
 SWEP.Primary.Sound       = Sound("Weapon_Galil.Single")

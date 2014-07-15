@@ -15,7 +15,7 @@ end
 
 SWEP.HeadshotMultiplier = 4
 SWEP.Tracer             = 1
-SWEP.TracerName         = "AirboatGunHeavyTracer"
+SWEP.TracerName         = "AirboatGunTracer"
 
 --- View ---
 SWEP.HoldType      = "ar2"

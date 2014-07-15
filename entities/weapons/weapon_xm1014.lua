@@ -28,7 +28,7 @@ SWEP.Primary.NumShots    = 9
 SWEP.Primary.Delay       = 0.6
 SWEP.Primary.Recoil      = 8
 SWEP.Primary.Damage      = 7
-SWEP.Primary.Cone        = 0.2
+SWEP.Primary.Cone        = 0.14
 
 SWEP.Primary.Ammo        = "Buckshot"
 SWEP.Primary.ClipSize    = 6

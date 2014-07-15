@@ -120,7 +120,7 @@ SWEP.HeadshotMultiplier = 2.7
 SWEP.StoredAmmo = 0
 SWEP.IsDropped = false
 
-SWEP.DeploySpeed = 1.5
+SWEP.DeploySpeed = 1
 
 SWEP.MuzzleFlashSize = 250
 SWEP.MuzzleFlashBrightness = 4
