@@ -14,3 +14,10 @@ function GM:HUDPaint()
 		surface.DrawText(CLASS.GetClassName(LocalPlayer():Class()))
 	end
 end
+
+function GM:HUDShouldDraw( name )
+    if (name == "CHudDeathNotice") then
+        return false
+    end
+    return true
+end

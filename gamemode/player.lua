@@ -100,3 +100,8 @@ end
 function GM:ShowSpare1(ply)
    ply:ConCommand("hunted_menu_class") -- Show clientside team menu
 end
+
+-- Silent Death
+function GM:PlayerDeathSound()
+   return true
+end
