@@ -1,3 +1,4 @@
+AddCSLuaFile("class.lua")
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_nightvision.lua")
 AddCSLuaFile("player_ext_shd.lua")
