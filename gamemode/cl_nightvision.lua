@@ -27,7 +27,7 @@ hook.Add("RenderScreenspaceEffects", "cl_nightvision_colors", function()
 end)
 
 hook.Add("Think", "cl_nightvision_think", function()
-	if LocalPlayer():NightVisionIsOn() then
+	if LocalPlayer():NightVisionIsOn() && LocalPlayer():Alive() then
 		local light = DynamicLight(LocalPlayer():EntIndex())
 		if (light) then
 			light.Pos = LocalPlayer():GetPos() + LocalPlayer():GetCurrentViewOffset()
