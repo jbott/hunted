@@ -35,7 +35,7 @@ hook.Add("Think", "cl_nightvision_think", function()
 			light.g = 255
 			light.b = 80
 			light.Brightness = 0.5
-			light.Size = 500 -- This should change for the different classes
+			light.Size = LocalPlayer():NightVisionSize()
 			light.Decay = 10000
 			light.DieTime = CurTime() + 0.1
 			light.Style = 0

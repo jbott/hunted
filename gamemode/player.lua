@@ -1,14 +1,17 @@
 -- First spawn on the server
 function GM:PlayerInitialSpawn( ply )
-   ply:SetTeam(TEAM_HUNTER)
+   ply:SetTeam(TEAM_UNASSIGNED)
    
    -- Broadcast message of player join
    local text = Format("%s Connected\n", ply:GetName())
-   for k, ply in pairs(player.GetAll()) do
-      if IsValid(ply) then
-         ply:PrintMessage(HUD_PRINTTALK, text)
+   for k,v in pairs(player.GetAll()) do
+      if IsValid(v) then
+         v:PrintMessage(HUD_PRINTTALK, text)
       end
    end
+
+   -- Run team select
+   ply:ConCommand("hunted_menu_team")
 end
 
 function GM:PlayerSpawn(ply)
@@ -25,7 +28,13 @@ function GM:PlayerSpawn(ply)
    ply:UnSpectate()
 
    -- Set player class
-   player_manager.SetPlayerClass(ply, "player_hunted_base")
+   if (ply:Team() == TEAM_HUNTED) then
+      player_manager.SetPlayerClass(ply, "player_hunted")
+   elseif (ply:Team() == TEAM_HUNTER) then
+      player_manager.SetPlayerClass(ply, "player_hunter")
+   else
+      player_manager.SetPlayerClass(ply, "player_base")
+   end
 
    player_manager.OnPlayerSpawn(ply)
    player_manager.RunClass(ply, "Spawn")
@@ -40,7 +49,7 @@ function GM:PlayerSpawn(ply)
 end
 
 -- Disable NoClipping
-function GM:PlayerNoClip( ply, desiredState )
+function GM:PlayerNoClip(ply, desiredState)
    if !desiredState then return true end
    return false
 end
@@ -48,4 +57,18 @@ end
 function GM:PlayerFootstep(ply, pos, foot, snd, volume, filter)
    sound.Play(snd, pos, 130)
    return true
+end
+
+function changeTeam(ply, cmd, args)
+   local newTeam =  tonumber(args[1])
+   if (!team.Valid(newTeam)) then ply:PrintMessage(HUD_PRINTCONSOLE, "Invalid Team " .. args[1]) end
+   print(ply:Name() .. " changed to team " .. team.GetName(newTeam))
+   ply:SetTeam(newTeam)
+   ply:KillSilent()
+   ply:Spawn()
+end
+concommand.Add("hunted_change_team", changeTeam)
+
+function GM:ShowTeam(ply)
+   ply:ConCommand("hunted_menu_team") -- Show clientside team menu
 end
