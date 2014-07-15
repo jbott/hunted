@@ -28,7 +28,7 @@ SWEP.Primary.Damage      = 30
 SWEP.Primary.Cone        = 0.016
 
 SWEP.Primary.Ammo        = "StriderMinigun"
-SWEP.Primary.ClipSize    = 10
+SWEP.Primary.ClipSize    = 20
 SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize
 
 SWEP.Primary.Sound       = Sound("Weapon_AK47.Single")

@@ -23,11 +23,11 @@ SWEP.WorldModel    = "models/weapons/w_smg_tmp.mdl"
 SWEP.ViewModelFlip = false
 SWEP.ViewModelFOV  = 54
 
---- Primary ---`
+--- Primary ---
 SWEP.Primary.Automatic   = true
 SWEP.Primary.Delay       = 0.08
 SWEP.Primary.Recoil      = 1.05
-SWEP.Primary.Damage      = 12
+SWEP.Primary.Damage      = 14
 SWEP.Primary.Cone        = 0.02
 
 SWEP.Primary.Ammo        = "Pistol"

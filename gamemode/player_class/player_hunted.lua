@@ -10,7 +10,7 @@ function PLAYER:Loadout()
 	-- Climb tool
 	-- Bandage
 	self.Player:Give("weapon_ak47")
-	self.Player:GiveAmmo(25 * 4, "StriderMinigun")
+	self.Player:GiveAmmo(20 * 4, "StriderMinigun")
 	self.Player:Give("weapon_tmp")
 	self.Player:GiveAmmo(40 * 4, "Pistol")
 
