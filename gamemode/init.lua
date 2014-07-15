@@ -1,6 +1,7 @@
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_nightvision.lua")
 AddCSLuaFile("player_ext_shd.lua")
+AddCSLuaFile("cl_gui.lua")
 include("shared.lua")
 
 include("player.lua")
