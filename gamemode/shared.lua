@@ -25,8 +25,4 @@ function GM:CreateTeams()
 	team.SetUp(TEAM_HUNTER, "Hunter", Color(200, 0, 0, 255), false)
 	team.SetUp(TEAM_HUNTED, "Hunted", Color(0, 0, 200, 255), false)
 	team.SetUp(TEAM_SPEC, "Spectator", Color(200, 200, 200, 255), true)
-
-	team.SetSpawnPoint(TEAM_HUNTER, "info_player_deathmatch")
-	team.SetSpawnPoint(TEAM_HUNTED, "info_player_deathmatch")
-	team.SetSpawnPoint(TEAM_SPEC, "info_player_deathmatch")
 end
