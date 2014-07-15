@@ -5,7 +5,7 @@ AddCSLuaFile()
 SWEP.Base = "weapon_tttbase"
 
 --- Info ---
-SWEP.PrintName = "AK-47"
+SWEP.PrintName = "Galil"
 SWEP.Slot      = 1
 SWEP.SlotPos   = 1
 if (CLIENT) then
@@ -15,24 +15,24 @@ end
 --- View ---
 SWEP.HoldType      = "ar2"
 SWEP.UseHands      = true
-SWEP.ViewModel     = "models/weapons/cstrike/c_rif_ak47.mdl"
-SWEP.WorldModel    = "models/weapons/w_rif_ak47.mdl"
+SWEP.ViewModel     = "models/weapons/cstrike/c_rif_galil.mdl"
+SWEP.WorldModel    = "models/weapons/w_rif_galil.mdl"
 SWEP.ViewModelFlip = false
 SWEP.ViewModelFOV  = 54
 
 --- Primary ---
-SWEP.Primary.Automatic   = true
+SWEP.Primary.Automatic   = false
 SWEP.Primary.Delay       = 0.3
-SWEP.Primary.Recoil      = 1.9
-SWEP.Primary.Damage      = 26
-SWEP.Primary.Cone        = 0.025
+SWEP.Primary.Recoil      = 1.5
+SWEP.Primary.Damage      = 30
+SWEP.Primary.Cone        = 0.02
 
-SWEP.Primary.Ammo        = "StriderMinigun"
-SWEP.Primary.ClipSize    = 20
+SWEP.Primary.Ammo        = "AirboatGun"
+SWEP.Primary.ClipSize    = 10
 SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize
 
-SWEP.Primary.Sound       = Sound("Weapon_AK47.Single")
+SWEP.Primary.Sound       = Sound("Weapon_Galil.Single")
 
 --- Iron Sights ---
-SWEP.IronSightsPos = Vector(-6.625, -12.0, 2.65)
-SWEP.IronSightsAng = Vector(2.3, 0, 0)
+SWEP.IronSightsPos = Vector(-6.3, -12.0, 1.65)
+SWEP.IronSightsAng = Vector(1, 0, 0)

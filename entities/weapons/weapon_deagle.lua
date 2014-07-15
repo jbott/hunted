@@ -1,45 +1,40 @@
 AddCSLuaFile()
 resource.AddFile("materials/vgui/hunted/icon_deagle.vmt")
 
-SWEP.HoldType			= "pistol"
+---- CONFIG ----
+SWEP.Base = "weapon_tttbase"
 
-if CLIENT then
-   SWEP.PrintName			= "Deagle"			
-   SWEP.Author				= "TTT"
-
-   SWEP.Slot				= 1
-   SWEP.SlotPos			= 1
-
-   SWEP.WepSelectIcon = surface.GetTextureID("vgui/hunted/icon_deagle")
+--- Info ---
+SWEP.PrintName          = "Deagle"
+SWEP.Slot               = 3
+SWEP.SlotPos            = 1
+if (CLIENT) then
+  SWEP.WepSelectIcon    = surface.GetTextureID("vgui/hunted/icon_deagle")
 end
-
-SWEP.Base				= "weapon_tttbase"
-
-SWEP.Spawnable = true
-SWEP.Kind = WEAPON_PISTOL
-SWEP.WeaponID = AMMO_DEAGLE
-
-SWEP.Primary.Ammo       = "CombineCannon"
-SWEP.Primary.Recoil			= 6
-SWEP.Primary.Damage = 43
-SWEP.Primary.Delay = 0.4
-SWEP.Primary.Cone = 0.02
-SWEP.Primary.ClipSize = 8
-SWEP.Primary.ClipMax = 36
-SWEP.Primary.DefaultClip = 8
-SWEP.Primary.Automatic = true
 
 SWEP.HeadshotMultiplier = 4
 
-SWEP.AutoSpawnable      = true
-SWEP.AmmoEnt = "item_ammo_revolver_ttt"
-SWEP.Primary.Sound			= Sound( "Weapon_Deagle.Single" )
+--- View ---
+SWEP.HoldType      = "pistol"
+SWEP.UseHands      = true
+SWEP.ViewModel     = "models/weapons/cstrike/c_pist_deagle.mdl"
+SWEP.WorldModel    = "models/weapons/w_pist_deagle.mdl"
+SWEP.ViewModelFlip = false
+SWEP.ViewModelFOV  = 54
 
-SWEP.UseHands			= true
-SWEP.ViewModelFlip		= false
-SWEP.ViewModelFOV		= 54
-SWEP.ViewModel			= "models/weapons/cstrike/c_pist_deagle.mdl"
-SWEP.WorldModel			= "models/weapons/w_pist_deagle.mdl"
+--- Primary ---
+SWEP.Primary.Automatic   = false
+SWEP.Primary.Delay       = 0.4
+SWEP.Primary.Recoil      = 6
+SWEP.Primary.Damage      = 45
+SWEP.Primary.Cone        = 0.02
 
+SWEP.Primary.Ammo        = "CombineCannon"
+SWEP.Primary.ClipSize    = 7
+SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize
+
+SWEP.Primary.Sound       = Sound("Weapon_Deagle.Single")
+
+--- Iron Sights ---
 SWEP.IronSightsPos = Vector(-6.361, -3.701, 2.15)
 SWEP.IronSightsAng = Vector(0, 0, 0)
