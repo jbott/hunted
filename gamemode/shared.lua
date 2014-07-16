@@ -6,8 +6,6 @@ GM.Website = "N/A"
 GM.TeamBased = true
 
 include("player_ext_shd.lua")
-include("class.lua")
-
 
 --- Teams ---
 TEAM_HUNTER  = 1
@@ -17,9 +15,7 @@ TEAM_SPEC    = TEAM_SPECTATOR
 --- Create classes ---
 include("player_class/player_base.lua")
 include("player_class/player_hunter.lua")
-include("player_class/player_hunter_classes.lua")
 include("player_class/player_hunted.lua")
-include("player_class/player_hunted_classes.lua")
 
 function GM:CreateTeams()
 	team.SetUp(TEAM_HUNTER, "Hunter", Color(200, 0, 0, 255), false)

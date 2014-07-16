@@ -4,7 +4,6 @@ DEFINE_BASECLASS("player_default")
 ---- Config ----
 local PLAYER = {}
 PLAYER.DisplayName       = "Base Class"
-PLAYER.Desc              = "Don't pick this class or the universe will collapse into the singularity!"
 
 -- Slower walk speeds
 PLAYER.WalkSpeed         = 150
@@ -27,10 +26,6 @@ PLAYER.Ammo = {}
 ---- Functions ----
 function PLAYER:GetDisplayName()
 	return self.DisplayName
-end
-
-function PLAYER:GetDesc()
-	return self.Desc
 end
 
 function PLAYER:Spawn()

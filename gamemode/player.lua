@@ -24,20 +24,16 @@ function GM:PlayerSpawn(ply)
       return
    end
 
-   --
-   -- If the player doesn't have a class
-   -- then spawn him as a spectator
-   --
-   if (ply:Class() == CLASS_UNASSIGNED) then
-      ply:KillSilent()
-      timer.Simple(0.2, function() ply:ConCommand("hunted_menu_class") end)
-      return
-   end
-
    -- Stop observer mode
    ply:UnSpectate()
 
-   player_manager.SetPlayerClass(ply, ply:Class())
+   if (ply:Team() == TEAM_HUNTED) then
+      player_manager.SetPlayerClass(ply, "player_hunted")
+   elseif (ply:Team() == TEAM_HUNTER) then
+      player_manager.SetPlayerClass(ply, "player_hunter")
+   else
+      player_manager.SetPlayerClass(ply, "player_base")
+   end
 
    player_manager.OnPlayerSpawn(ply)
    player_manager.RunClass(ply, "Spawn")
@@ -70,7 +66,6 @@ function changeTeam(ply, cmd, args)
    end
    print(ply:Name() .. " changed to team " .. team.GetName(newTeam))
    ply:SetTeam(newTeam)
-   ply:SetClass(CLASS_UNDEFINED)
    ply:KillSilent()
    ply:Spawn()
 end
@@ -78,27 +73,6 @@ concommand.Add("hunted_change_team", changeTeam)
 
 function GM:ShowTeam(ply)
    ply:ConCommand("hunted_menu_team") -- Show clientside team menu
-end
-
-function changeClass(ply, cmd, args)
-   local newClass = tostring(args[1])
-   if (!CLASS.isValid(newClass)) then
-      ply:PrintMessage(HUD_PRINTCONSOLE, "Invalid Class " .. args[1])
-      return
-   end
-   print(ply:Name() .. " changed to class " .. CLASS.GetClassName(newClass))
-   ply:SetClass(newClass)
-   ply:KillSilent()
-   ply:Spawn()
-end
-concommand.Add("hunted_change_class", changeClass)
-
-function GM:ShowTeam(ply)
-   ply:ConCommand("hunted_menu_team") -- Show clientside team menu
-end
-
-function GM:ShowSpare1(ply)
-   ply:ConCommand("hunted_menu_class") -- Show clientside team menu
 end
 
 -- Silent Death
