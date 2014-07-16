@@ -6,11 +6,17 @@ GM.Website = "N/A"
 GM.TeamBased = true
 
 include("player_ext_shd.lua")
+include("inventory_shd.lua")
 
 --- Teams ---
 TEAM_HUNTER  = 1
 TEAM_HUNTED  = 2
 TEAM_SPEC    = TEAM_SPECTATOR
+
+--- Enums ---
+INVENTORY_TYPE_PLAYER  = 1
+INVENTORY_TYPE_RAGDOLL = 2
+INVENTORY_TYPE_SPAWN   = 3
 
 --- Create classes ---
 include("player_class/player_base.lua")

@@ -75,6 +75,10 @@ function GM:ShowTeam(ply)
    ply:ConCommand("hunted_menu_team") -- Show clientside team menu
 end
 
+function GM:ShowHelp(ply)
+   ply:ConCommand("hunted_inv") -- Show clientside team menu
+end
+
 -- Silent Death
 function GM:PlayerDeathSound()
    return true

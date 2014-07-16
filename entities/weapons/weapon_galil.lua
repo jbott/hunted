@@ -5,9 +5,12 @@ AddCSLuaFile()
 SWEP.Base = "weapon_tttbase"
 
 --- Info ---
-SWEP.PrintName = "Galil"
-SWEP.Slot      = 1
-SWEP.SlotPos   = 1
+SWEP.PrintName       = "Galil"
+SWEP.InvSpawnable    = true
+SWEP.InvWeight       = 8
+SWEP.InvMaxItems     = 1
+SWEP.Slot            = 1
+SWEP.SlotPos         = 1
 if (CLIENT) then
   --SWEP.WepSelectIcon = surface.GetTextureID("vgui/hunted/icon_m16")
 end

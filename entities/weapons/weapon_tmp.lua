@@ -6,6 +6,9 @@ SWEP.Base = "weapon_tttbase"
 
 --- Info ---
 SWEP.PrintName       = "TMP"
+SWEP.InvSpawnable    = true
+SWEP.InvWeight       = 3
+SWEP.InvMaxItems     = 1
 SWEP.Slot            = 3
 SWEP.SlotPos         = 1
 if (CLIENT) then

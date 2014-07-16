@@ -5,7 +5,10 @@ resource.AddFile("materials/vgui/hunted/icon_deagle.vmt")
 SWEP.Base = "weapon_tttbase"
 
 --- Info ---
-SWEP.PrintName          = "Deagle"
+SWEP.PrintName          = "Desert Eagle"
+SWEP.InvSpawnable       = true
+SWEP.InvWeight          = 4
+SWEP.InvMaxItems        = 1
 SWEP.Slot               = 3
 SWEP.SlotPos            = 1
 if (CLIENT) then

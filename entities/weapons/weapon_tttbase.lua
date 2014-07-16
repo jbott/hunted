@@ -89,6 +89,7 @@ SWEP.Base = "weapon_base"
 
 SWEP.Category           = "TTT"
 SWEP.Spawnable          = false
+SWEP.InvSpawnable       = false
 
 SWEP.IsGrenade = false
 

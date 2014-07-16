@@ -5,11 +5,14 @@ AddCSLuaFile()
 SWEP.Base = "weapon_tttbase"
 
 --- Info ---
-SWEP.PrintName          = "P228"
-SWEP.Slot               = 3
-SWEP.SlotPos            = 1
+SWEP.PrintName       = "P228"
+SWEP.InvSpawnable    = true
+SWEP.InvWeight       = 2
+SWEP.InvMaxItems     = 1
+SWEP.Slot            = 3
+SWEP.SlotPos         = 1
 if (CLIENT) then
-  --SWEP.WepSelectIcon    = surface.GetTextureID("vgui/hunted/icon_deagle")
+  --SWEP.WepSelectIcon = surface.GetTextureID("vgui/hunted/icon_deagle")
 end
 
 SWEP.DeploySpeed        = 1.5

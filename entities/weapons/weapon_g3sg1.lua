@@ -6,11 +6,14 @@ resource.AddFile("materials/sprites/scope.vmt")
 SWEP.Base = "weapon_tttbase"
 
 --- Info ---
-SWEP.PrintName          = "G3SG1"
-SWEP.Slot               = 2
-SWEP.SlotPos            = 1
+SWEP.PrintName       = "G3SG1"
+SWEP.InvSpawnable    = true
+SWEP.InvWeight       = 12
+SWEP.InvMaxItems     = 1
+SWEP.Slot            = 2
+SWEP.SlotPos         = 1
 if (CLIENT) then
-  --SWEP.WepSelectIcon    = surface.GetTextureID("vgui/hunted/icon_scout")
+  --SWEP.WepSelectIcon = surface.GetTextureID("vgui/hunted/icon_scout")
 end
 
 SWEP.HeadshotMultiplier = 4

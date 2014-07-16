@@ -5,11 +5,14 @@ resource.AddFile("materials/vgui/hunted/icon_shotgun.vmt")
 SWEP.Base = "weapon_tttbase"
 
 --- Info ---
-SWEP.PrintName          = "M3"
-SWEP.Slot               = 2
-SWEP.SlotPos            = 1
+SWEP.PrintName       = "M3"
+SWEP.InvSpawnable    = true
+SWEP.InvWeight       = 7
+SWEP.InvMaxItems     = 1
+SWEP.Slot            = 2
+SWEP.SlotPos         = 1
 if (CLIENT) then
-  SWEP.WepSelectIcon    = surface.GetTextureID("vgui/hunted/icon_shotgun")
+  SWEP.WepSelectIcon = surface.GetTextureID("vgui/hunted/icon_shotgun")
 end
 
 SWEP.reloadtimer        = 0

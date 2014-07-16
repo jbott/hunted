@@ -1,9 +1,12 @@
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("inventory_shd.lua")
 AddCSLuaFile("cl_nightvision.lua")
 AddCSLuaFile("player_ext_shd.lua")
 AddCSLuaFile("cl_gui.lua")
 AddCSLuaFile("cl_hud.lua")
 include("shared.lua")
+include("player_ext.lua")
+include("inventory.lua")
 
 include("player.lua")
 
