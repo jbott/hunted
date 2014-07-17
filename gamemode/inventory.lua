@@ -1,5 +1,7 @@
 util.AddNetworkString("InventoryOpen")
 util.AddNetworkString("InventoryOpenResponse")
+util.AddNetworkString("InventoryClosed")
+util.AddNetworkString("InventoryForceClose")
 util.AddNetworkString("InventoryPopulateList")
 util.AddNetworkString("InventoryPopulateListResponse")
 util.AddNetworkString("InventoryActionTakeItem")
@@ -13,7 +15,7 @@ function setInventoryType(ply, type)
 end
 
 function getInventoryType(ply)
-	return invPlayer[ply:SteamID()].type or INVENTORY_TYPE_SPAWN
+	return invPlayer[ply:SteamID()].type or INVENTORY_TYPE_PLAYER
 end
 
 function setInventoryEntity(ply, entity)
@@ -31,6 +33,12 @@ function HandleInventoryOpen(len, ply)
 	net.Send(ply)
 end
 net.Receive("InventoryOpen", HandleInventoryOpen)
+
+function HandleInventoryClosed(len, ply)
+	print("Close")
+	setInventoryType(ply, INVENTORY_TYPE_PLAYER)
+end
+net.Receive("InventoryClosed", HandleInventoryClosed)
 
 function invUse(ply, key)
 	if (key == IN_USE) then
@@ -54,6 +62,12 @@ function invUse(ply, key)
 	end
 end
 hook.Add("KeyPress", "InventoryUseHook", invUse)
+
+function invDeath(victim, inflictor, attacker)
+	net.Start("InventoryForceClose")
+	net.Send(victim)
+end
+hook.Add("PlayerDeath", "InventoryDeathHook", invDeath)
 
 function populateList(ply, id)
 	local inv = {}

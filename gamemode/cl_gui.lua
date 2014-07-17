@@ -208,7 +208,10 @@ function InventoryGUI()
 	frame.OnClose = function()
 		-- Reset
 		inventoryPanel = {}
+		net.Start("InventoryClosed")
+		net.SendToServer()
 	end
+	inventoryPanel.frame = frame
 
 	-- Create player panel
 	local rightPanel = createInventory(INVENTORY_SIDE_RIGHT)
@@ -247,6 +250,13 @@ function InventoryGUI()
 	end
 end
 net.Receive("InventoryOpenResponse", InventoryGUI)
+
+function InventoryForceClose()
+	if inventoryPanel and inventoryPanel.frame then
+		inventoryPanel.frame:Close()
+	end
+end
+net.Receive("InventoryForceClose", InventoryForceClose)
 
 function populateList()
 	local id = net.ReadInt(3)
