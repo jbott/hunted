@@ -17,6 +17,9 @@ PLAYER.Model             = "models/player/kleiner.mdl"
 PLAYER.Color             = Vector(1, 1, 1)
 PLAYER.NightVisionSize   = 500
 
+PLAYER.Inventory         = true
+PLAYER.InvMaxWeight      = 25
+
 PLAYER.Weapons = {
 	"weapon_nightvision"
 }
@@ -29,6 +32,8 @@ function PLAYER:GetDisplayName()
 end
 
 function PLAYER:Spawn()
+	self.Player:SetHasInventory(self.Inventory)
+	self.Player:SetInventoryMax(self.InvMaxWeight)
 	self.Player:SetNightVisionSize(self.NightVisionSize)
 	-- Adjust player duck height to be more reasonable
 	self.Player:SetViewOffsetDucked(Vector(0.0, 0.0, 40.0))

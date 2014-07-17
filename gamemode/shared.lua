@@ -15,8 +15,11 @@ TEAM_SPEC    = TEAM_SPECTATOR
 
 --- Enums ---
 INVENTORY_TYPE_PLAYER  = 1
-INVENTORY_TYPE_RAGDOLL = 2
+INVENTORY_TYPE_ENTITY  = 2
 INVENTORY_TYPE_SPAWN   = 3
+
+INVENTORY_SIDE_RIGHT   = 1
+INVENTORY_SIDE_LEFT    = 2
 
 --- Create classes ---
 include("player_class/player_base.lua")

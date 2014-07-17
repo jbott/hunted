@@ -1,83 +1,130 @@
 util.AddNetworkString("InventoryOpen")
-util.AddNetworkString("InventorySendClient")
-util.AddNetworkString("InventoryTakeItem")
-util.AddNetworkString("InventoryDropItem")
-util.AddNetworkString("InventoryPopulatePlayer")
-util.AddNetworkString("InventoryPopulatePlayerClient")
-util.AddNetworkString("InventoryPopulateOther")
-util.AddNetworkString("InventoryPopulateOtherClient")
+util.AddNetworkString("InventoryOpenResponse")
+util.AddNetworkString("InventoryPopulateList")
+util.AddNetworkString("InventoryPopulateListResponse")
+util.AddNetworkString("InventoryActionTakeItem")
+util.AddNetworkString("InventoryActionDropItem")
 
-function getPlayerBySteamID(plyID)
-	if (game.SinglePlayer()) then
-		return player.GetByID(1)
-	else
-		for _,pl in pairs(player.GetHumans()) do
-			if (pl:SteamID() == plyID) then
-				return pl
-			end
-		end
-	end
-	return nil
+local invPlayer = {}
+
+function setInventoryType(ply, type)
+	invPlayer[ply:SteamID()] = {}
+	invPlayer[ply:SteamID()].type = type
 end
 
-function HandleInventoryOpen()
-	local ply = getPlayerBySteamID(net.ReadString())
-	if ply == nil then return end
+function getInventoryType(ply)
+	return invPlayer[ply:SteamID()].type or INVENTORY_TYPE_SPAWN
+end
 
-	net.Start("InventorySendClient")
-		net.WriteInt(INVENTORY_TYPE_SPAWN, 3) -- Inventory type
+function setInventoryEntity(ply, entity)
+	invPlayer[ply:SteamID()].entity = entity
+end
+
+function getInventoryEntity(ply)
+	return invPlayer[ply:SteamID()].entity or nil
+end
+
+function HandleInventoryOpen(len, ply)
+	setInventoryType(ply, INVENTORY_TYPE_SPAWN)
+	net.Start("InventoryOpenResponse")
+		net.WriteInt(getInventoryType(ply), 3)
 	net.Send(ply)
 end
 net.Receive("InventoryOpen", HandleInventoryOpen)
 
-function HandleInventoryPopulatePlayer()
-	local ply = getPlayerBySteamID(net.ReadString())
-	if ply == nil then return end
+function invUse(ply, key)
+	if (key == IN_USE) then
+		local ent = ply:GetEyeTrace().Entity
 
-	net.Start("InventoryPopulatePlayerClient")
-		net.WriteTable(ply:GetInventory())
+		-- No touching other player's inventories
+		if (ent:IsPlayer()) then return true end
+
+		if (ent:HasInventory()) then
+			setInventoryType(ply, INVENTORY_TYPE_ENTITY)
+			setInventoryEntity(ply, ent)
+
+			net.Start("InventoryOpenResponse")
+				net.WriteInt(getInventoryType(ply), 3)
+			net.Send(ply)
+			return false
+		end
+	end
+end
+hook.Add("KeyPress", "InventoryUseHook", invUse)
+
+function populateList(ply, id)
+	local inv = {}
+
+	if (id == INVENTORY_SIDE_RIGHT) then
+		inv.name = "Player"
+		inv.data = ply:GetInventory()
+		inv.max = ply:InventoryMax()
+		inv.action = "Drop"
+		inv.actionMessage = "InventoryActionDropItem"
+	else
+		if (getInventoryType(ply) == INVENTORY_TYPE_ENTITY) then
+			local ent = getInventoryEntity(ply)
+			inv.name = ent:GetName()
+			if (inv.name == "") then
+				inv.name = ent:GetClass()
+			end
+			inv.data = ent:GetInventory()
+			inv.max = ent:InventoryMax()
+		elseif (getInventoryType(ply) == INVENTORY_TYPE_SPAWN) then
+			inv.name = "Spawn"
+			inv.data = INVENTORY.GetAllItems()
+			inv.max = 0
+		end
+		inv.action = "Take"
+		inv.actionMessage = "InventoryActionTakeItem"
+	end
+
+	net.Start("InventoryPopulateListResponse")
+		net.WriteInt(id, 3)
+		net.WriteTable(inv)
 	net.Send(ply)
 end
-net.Receive("InventoryPopulatePlayer", HandleInventoryPopulatePlayer)
 
-function HandleInventoryPopulateOther()
-	local ply = getPlayerBySteamID(net.ReadString())
-	if ply == nil then return end
-
-	net.Start("InventoryPopulateOtherClient")
-		net.WriteTable(INVENTORY.GetAllItems())
-	net.Send(ply)
+function HandleInventoryPopulateList(len, ply)
+	local id = net.ReadInt(3)
+	populateList(ply, id)
 end
-net.Receive("InventoryPopulateOther", HandleInventoryPopulateOther)
+net.Receive("InventoryPopulateList", HandleInventoryPopulateList)
 
-function HandleInventoryTakeItem()
-	local ply = getPlayerBySteamID(net.ReadString())
-	if ply == nil then return end
-
+function HandleInventoryActionTakeItem(len, ply)
+	local id = net.ReadInt(16)
 	local item = net.ReadString()
-	ply:InventoryAdd(item)
 
-	net.Start("InventoryPopulatePlayerClient")
-		net.WriteTable(ply:GetInventory()) -- Inventory type
-	net.Send(ply)
-	net.Start("InventoryPopulateOtherClient")
-		net.WriteTable(INVENTORY.GetAllItems())
-	net.Send(ply)
+	if (getInventoryType(ply) == INVENTORY_TYPE_SPAWN) then
+		ply:InventoryAdd(item)
+	elseif (getInventoryType(ply) == INVENTORY_TYPE_ENTITY) then
+		local ent = getInventoryEntity(ply)
+		ply:InventoryTake(ent, id)
+	end
+
+	if (getInventoryType(ply) != INVENTORY_TYPE_PLAYER) then
+		populateList(ply, INVENTORY_SIDE_LEFT)
+	end
+
+	populateList(ply, INVENTORY_SIDE_RIGHT)
 end
-net.Receive("InventoryTakeItem", HandleInventoryTakeItem)
+net.Receive("InventoryActionTakeItem", HandleInventoryActionTakeItem)
 
-function HandleInventoryDropItem()
-	local ply = getPlayerBySteamID(net.ReadString())
-	if ply == nil then return end
+function HandleInventoryActionDropItem(len, ply)
+	local id = net.ReadInt(16)
+	local item = net.ReadString()
 
-	local id = net.ReadString()
-	ply:InventoryRemove(tonumber(id))
+	if (getInventoryType(ply) == INVENTORY_TYPE_SPAWN) then
+		ply:InventoryRemove(id)
+	elseif (getInventoryType(ply) == INVENTORY_TYPE_ENTITY) then
+		local ent = getInventoryEntity(ply)
+		ent:InventoryTake(ply, id)
+	end
 
-	net.Start("InventoryPopulatePlayerClient")
-		net.WriteTable(ply:GetInventory()) -- Inventory type
-	net.Send(ply)
-	net.Start("InventoryPopulateOtherClient")
-		net.WriteTable(INVENTORY.GetAllItems())
-	net.Send(ply)
+	if (getInventoryType(ply) != INVENTORY_TYPE_PLAYER) then
+		populateList(ply, INVENTORY_SIDE_LEFT)
+	end
+
+	populateList(ply, INVENTORY_SIDE_RIGHT)
 end
-net.Receive("InventoryDropItem", HandleInventoryDropItem)
+net.Receive("InventoryActionDropItem", HandleInventoryActionDropItem)

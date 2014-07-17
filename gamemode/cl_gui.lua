@@ -76,14 +76,8 @@ concommand.Add("hunted_menu_team", ChangeTeamGUI)
 ---- Inventory ----
 -------------------
 
--- Automatically open all net messages with the SteamID
-local function netStart(message)
-	net.Start(message)
-	net.WriteString(LocalPlayer():SteamID())
-end
-
 function InventoryOpen()
-	netStart("InventoryOpen")
+	net.Start("InventoryOpen")
 	net.SendToServer()
 end
 concommand.Add("hunted_inv", InventoryOpen)
@@ -112,6 +106,8 @@ local function addLabel(parent, newdata)
 	if (data.forceWide) then
 		label:SetWide(data.forceWide)
 	end
+
+	return label
 end
 
 local function addItem(listLayout, item, action, actionFunc)
@@ -151,11 +147,54 @@ local function addItem(listLayout, item, action, actionFunc)
 	})
 end
 
-local playerScroll = nil
-local playerList = nil
-local otherScroll = nil
-local otherList = nil
+local inventoryPanel = {}
+
+function createInventory(id)
+	inventoryPanel[id] = {}
+	local invPanel = inventoryPanel[id]
+
+	local panel = vgui.Create("DPanel")
+	panel:SetBackgroundColor(Color(0, 0, 0, 200))
+
+	-- Top - Weight Pane
+	local weightPanel = vgui.Create("DPanel", panel)
+	weightPanel:Dock(TOP)
+	weightPanel:SetBackgroundColor(Color(0, 0, 0, 150))
+	weightPanel:SetTall(35)
+	invPanel.weightLabel = addLabel(weightPanel, {
+		text = "0/0",
+		font = "Roboto16",
+		dock = RIGHT,
+		marginRight = 10
+	})
+	invPanel.weightStringLabel = addLabel(weightPanel, {
+		text = "Weight:",
+		font = "Roboto16",
+		dock = RIGHT,
+		marginRight = 5
+	})
+
+	invPanel.nameLabel = addLabel(weightPanel, {
+		text = "",
+		font = "Roboto16",
+		dock = LEFT,
+		marginLeft = 10
+	})
+
+	-- Bottom - Inventory
+	invPanel.scrollLayout = vgui.Create("DScrollPanel", panel)
+	invPanel.scrollLayout:Dock(FILL)
+	invPanel.scrollLayout.OldPerformLayout = invPanel.scrollLayout.PerformLayout
+	invPanel.scrollLayout.VBar.SetEnabled = function() invPanel.scrollLayout.VBar.Enabled = true end
+	invPanel.listLayout = vgui.Create("DListLayout", invPanel.scrollLayout)
+	invPanel.listLayout:Dock(FILL)
+
+	return panel
+end
+
 function InventoryGUI()
+	if (table.Count(inventoryPanel) != 0) then return end
+
 	local inventorytype = net.ReadInt(3)
 
 	local frame = vgui.Create("DFrame")
@@ -163,42 +202,34 @@ function InventoryGUI()
 	frame:Center()
 	frame:SetTitle("Inventory")
 	frame:SetVisible(true)
-	frame:SetDraggable(false)
+	frame:SetDraggable(true)
 	frame:ShowCloseButton(true)
 	frame:MakePopup()
+	frame.OnClose = function()
+		-- Reset
+		inventoryPanel = {}
+	end
 
 	-- Create player panel
-	local playerPanel = vgui.Create("DPanel")
-	playerPanel:SetBackgroundColor(Color(0, 0, 0, 200))
-	playerScroll = vgui.Create("DScrollPanel", playerPanel)
-	playerScroll:Dock(FILL)
-	playerScroll.OldPerformLayout = playerScroll.PerformLayout
-	playerScroll.VBar.SetEnabled = function() playerScroll.VBar.Enabled = true end
-	playerList = vgui.Create("DListLayout", playerScroll)
-	playerList:Dock(FILL)
+	local rightPanel = createInventory(INVENTORY_SIDE_RIGHT)
 
 	if (inventorytype == INVENTORY_TYPE_PLAYER) then
 		-- Single Panel
-		playerPanel:SetParent(frame)
-		playerPanel:Dock(FILL)
+		rightPanel:SetParent(frame)
+		rightPanel:Dock(FILL)
 
 		-- Populate items
-		netStart("InventoryPopulatePlayer")
+		net.Start("InventoryPopulateList")
+			net.WriteInt(INVENTORY_SIDE_RIGHT, 3)
 		net.SendToServer()
 	else
 		-- Double Panel
-		local otherPanel = vgui.Create("DPanel")
-		otherPanel:SetBackgroundColor(Color(0, 0, 0, 200))
-		otherScroll = vgui.Create("DScrollPanel", otherPanel)
-		otherScroll:Dock(FILL)
-		otherScroll.VBar.SetEnabled = function() otherScroll.VBar.Enabled = true end
-		otherList = vgui.Create("DListLayout", otherScroll)
-		otherList:Dock(FILL)
+		local leftPanel = createInventory(INVENTORY_SIDE_LEFT)
 
 		local div = vgui.Create("DHorizontalDivider", frame)
 		div:Dock(FILL)
-		div:SetLeft(otherPanel)
-		div:SetRight(playerPanel)
+		div:SetLeft(leftPanel)
+		div:SetRight(rightPanel)
 		div:SetLeftWidth(504)
 		div:SetDividerWidth(4)
 		-- Disable mouse movement of divider
@@ -206,56 +237,64 @@ function InventoryGUI()
 		div.m_DragBar:SetCursor("arrow")
 
 		-- Populate items
-		netStart("InventoryPopulatePlayer")
+		net.Start("InventoryPopulateList")
+			net.WriteInt(INVENTORY_SIDE_LEFT, 3)
 		net.SendToServer()
 
-		netStart("InventoryPopulateOther")
+		net.Start("InventoryPopulateList")
+			net.WriteInt(INVENTORY_SIDE_RIGHT, 3)
 		net.SendToServer()
-		end
-
+	end
 end
-net.Receive("InventorySendClient", InventoryGUI)
+net.Receive("InventoryOpenResponse", InventoryGUI)
 
-function populatePlayerList()
-	local inventory = net.ReadTable()
+function populateList()
+	local id = net.ReadInt(3)
+	local invPanel = inventoryPanel[id]
+
+	local inv = net.ReadTable()
+
+	invPanel.nameLabel:SetText(inv.name)
+	invPanel.nameLabel:SizeToContents()
 
 	-- Remove old
-	for _,child in pairs(playerList:GetChildren()) do
+	for _,child in pairs(invPanel.listLayout:GetChildren()) do
 		child:Remove()
 	end
 
+	local weight = 0
 	-- Populate items
-	for k,item in pairs(inventory) do
-		addItem(playerList, INVENTORY.GetItemData(item), "Drop", function()
-			netStart("InventoryDropItem")
-				net.WriteString(tostring(k))
-			net.SendToServer()
-		end)
-	end
-
-	playerList:InvalidateLayout(true)
-	playerScroll:InvalidateLayout(true)
-end
-net.Receive("InventoryPopulatePlayerClient", populatePlayerList)
-
-function populateOtherList()
-	local inventory = net.ReadTable()
-
-	-- Remove old
-	for _,child in pairs(otherList:GetChildren()) do
-		child:Remove()
-	end
-
-	-- Populate items
-	for k,item in pairs(inventory) do
-		addItem(otherList, INVENTORY.GetItemData(item), "Take", function()
-			netStart("InventoryTakeItem")
+	for k,item in pairs(inv.data) do
+		weight = weight + INVENTORY.GetItemData(item).weight
+		addItem(invPanel.listLayout, INVENTORY.GetItemData(item), inv.action, function()
+			net.Start(inv.actionMessage)
+				net.WriteInt(k, 16)
 				net.WriteString(item)
 			net.SendToServer()
 		end)
 	end
 
-	otherList:InvalidateLayout(true)
-	otherScroll:InvalidateLayout(true)
+	if (inv.max != 0) then
+		invPanel.weightLabel:SetText(tostring(weight) .. "/" .. inv.max)
+		invPanel.weightLabel:SizeToContents()
+
+		-- Set Color to show level of fullness
+		local weightRation = weight / inv.max
+		local color = nil
+		if (weightRation == 1) then
+			color = Color(255, 0, 0, 255)
+		elseif (weightRation > 0.8) then
+			color = Color(255, 255, 0, 255)
+		else
+			color = Color(0, 255, 0, 255)
+		end
+		invPanel.weightLabel:SetTextColor(color)
+	else
+		invPanel.weightLabel:Hide()
+		invPanel.weightStringLabel:Hide()
+	end
+
+	invPanel.listLayout:InvalidateLayout(true)
+	invPanel.scrollLayout:InvalidateLayout(true)
 end
-net.Receive("InventoryPopulateOtherClient", populateOtherList)
+net.Receive("InventoryPopulateListResponse", populateList)
