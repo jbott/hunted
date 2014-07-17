@@ -34,6 +34,9 @@ net.Receive("InventoryOpen", HandleInventoryOpen)
 
 function invUse(ply, key)
 	if (key == IN_USE) then
+		local trace = ply:GetEyeTrace()
+		if (!trace.Hit or trace.StartPos:Distance(trace.HitPos) > 75) then return true end
+
 		local ent = ply:GetEyeTrace().Entity
 
 		-- No touching other player's inventories
