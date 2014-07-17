@@ -14,12 +14,22 @@ TEAM_HUNTED  = 2
 TEAM_SPEC    = TEAM_SPECTATOR
 
 --- Enums ---
-INVENTORY_TYPE_PLAYER  = 1
-INVENTORY_TYPE_ENTITY  = 2
-INVENTORY_TYPE_SPAWN   = 3
+INVENTORY_TYPE_PLAYER   = 1
+INVENTORY_TYPE_ENTITY   = 2
+INVENTORY_TYPE_SPAWN    = 3
 
-INVENTORY_SIDE_RIGHT   = 1
-INVENTORY_SIDE_LEFT    = 2
+INVENTORY_SIDE_RIGHT    = 1
+INVENTORY_SIDE_LEFT     = 2
+
+INVENTORY_CAT_NONE      = 0
+INVENTORY_CAT_PRIMARY   = 1
+INVENTORY_CAT_SECONDARY = 2
+INVENTORY_CAT_AMMO      = 3
+INVENTORY_CAT_MEDICAL   = 4
+INVENTORY_CAT_EXPL      = 5
+INVENTORY_CAT_MISC      = 6
+
+include("items.lua")
 
 --- Create classes ---
 include("player_class/player_base.lua")
@@ -31,3 +41,8 @@ function GM:CreateTeams()
 	team.SetUp(TEAM_HUNTED, "Hunted", Color(0, 0, 200, 255), false)
 	team.SetUp(TEAM_SPEC, "Spectator", Color(200, 200, 200, 255), true)
 end
+
+concommand.Add("force_inv_load", function()
+	hook.Call("InventoryReload")
+	BroadcastLua([[hook.Call("InventoryReload")]])
+end)

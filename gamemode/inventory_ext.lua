@@ -4,6 +4,7 @@ if not entmeta then return end
 
 local hasInventory = {}
 local maxInventory = {}
+local filterInventory = {}
 local inventoryTable = {}
 
 function entmeta:SetHasInventory(val)
@@ -35,6 +36,16 @@ function entmeta:InventoryMax()
 	return maxInventory[self:EntIndex()] or 0
 end
 
+function entmeta:SetInventoryFilter(type)
+	if (!self:HasInventory()) then return end
+	filterInventory[self:EntIndex()] = type
+end
+
+function entmeta:InventoryFilter()
+	if (!self:HasInventory()) then return 0 end
+	return filterInventory[self:EntIndex()] or INVENTORY_CAT_NONE
+end
+
 function entmeta:InventoryWeight()
 	if (!self:HasInventory()) then return 0 end
 	local weight = 0
@@ -46,7 +57,8 @@ end
 
 function entmeta:InventoryAdd(item)
 	if (!self:HasInventory()) then return end
-	if (self:InventoryWeight() + INVENTORY.GetItemData(item).weight <= self:InventoryMax()) then
+	if (self:InventoryMax() == 0 or
+		self:InventoryWeight() + INVENTORY.GetItemData(item).weight <= self:InventoryMax()) then
 		table.insert(inventoryTable[self:EntIndex()], item)
 	end
 end

@@ -10,6 +10,9 @@ function GM:PlayerInitialSpawn( ply )
       end
    end
 
+   -- Load inventory
+   ply:SendLua([[hook.Call("InventoryReload")]])
+
    -- Run team select
    ply:ConCommand("hunted_menu_team")
 end

@@ -35,19 +35,3 @@ function GetItemData(item)
 	
 	return data
 end
-
-local function addSWEPS()
-	for _, weapon in pairs(weapons.GetList()) do
-		if (weapon.InvSpawnable) then
-			-- Add to items
-			AddItem(weapon.ClassName, {
-				displayname = weapon.PrintName or weapon.ClassName,
-				weight = weapon.InvWeight or 0,
-				max = weapon.InvMaxItems or 0,
-				restrict = weapon.InvRestrict
-			})
-		end
-	end
-end
-addSWEPS() -- This handles any code reloads that occur
-hook.Add("OnGamemodeLoaded", "inventory_addsweps", addSWEPS)

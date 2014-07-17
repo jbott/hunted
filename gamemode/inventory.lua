@@ -27,7 +27,7 @@ function getInventoryEntity(ply)
 end
 
 function HandleInventoryOpen(len, ply)
-	setInventoryType(ply, INVENTORY_TYPE_SPAWN)
+	setInventoryType(ply, INVENTORY_TYPE_PLAYER)
 	net.Start("InventoryOpenResponse")
 		net.WriteInt(getInventoryType(ply), 3)
 	net.Send(ply)
@@ -35,7 +35,6 @@ end
 net.Receive("InventoryOpen", HandleInventoryOpen)
 
 function HandleInventoryClosed(len, ply)
-	print("Close")
 	setInventoryType(ply, INVENTORY_TYPE_PLAYER)
 end
 net.Receive("InventoryClosed", HandleInventoryClosed)
@@ -76,8 +75,14 @@ function populateList(ply, id)
 		inv.name = "Player"
 		inv.data = ply:GetInventory()
 		inv.max = ply:InventoryMax()
+		inv.weight = ply:InventoryWeight()
 		inv.action = "Drop"
 		inv.actionMessage = "InventoryActionDropItem"
+		if (getInventoryType(ply) == INVENTORY_TYPE_ENTITY) then
+			inv.filterType = getInventoryEntity(ply):InventoryFilter()
+		elseif (getInventoryType(ply) == INVENTORY_TYPE_SPAWN) then
+			inv.filterType = INVENTORY_CAT_NONE
+		end
 	else
 		if (getInventoryType(ply) == INVENTORY_TYPE_ENTITY) then
 			local ent = getInventoryEntity(ply)
@@ -87,6 +92,7 @@ function populateList(ply, id)
 			end
 			inv.data = ent:GetInventory()
 			inv.max = ent:InventoryMax()
+			inv.weight = ent:InventoryWeight()
 		elseif (getInventoryType(ply) == INVENTORY_TYPE_SPAWN) then
 			inv.name = "Spawn"
 			inv.data = INVENTORY.GetAllItems()
@@ -94,6 +100,7 @@ function populateList(ply, id)
 		end
 		inv.action = "Take"
 		inv.actionMessage = "InventoryActionTakeItem"
+		inv.filterType = INVENTORY_CAT_NONE
 	end
 
 	net.Start("InventoryPopulateListResponse")
@@ -116,13 +123,15 @@ function HandleInventoryActionTakeItem(len, ply)
 		ply:InventoryAdd(item)
 	elseif (getInventoryType(ply) == INVENTORY_TYPE_ENTITY) then
 		local ent = getInventoryEntity(ply)
-		ply:InventoryTake(ent, id)
+		if (ent:InventoryMax() == 0) then
+			-- Infinite inventory
+			ply:InventoryAdd(item)
+		else
+			ply:InventoryTake(ent, id)
+		end
 	end
 
-	if (getInventoryType(ply) != INVENTORY_TYPE_PLAYER) then
-		populateList(ply, INVENTORY_SIDE_LEFT)
-	end
-
+	populateList(ply, INVENTORY_SIDE_LEFT)
 	populateList(ply, INVENTORY_SIDE_RIGHT)
 end
 net.Receive("InventoryActionTakeItem", HandleInventoryActionTakeItem)
@@ -135,13 +144,15 @@ function HandleInventoryActionDropItem(len, ply)
 		ply:InventoryRemove(id)
 	elseif (getInventoryType(ply) == INVENTORY_TYPE_ENTITY) then
 		local ent = getInventoryEntity(ply)
-		ent:InventoryTake(ply, id)
+		if (ent:InventoryMax() == 0) then
+			-- Infinite inventory
+			ply:InventoryRemove(id)
+		else
+			ent:InventoryTake(ply, id)
+		end
 	end
 
-	if (getInventoryType(ply) != INVENTORY_TYPE_PLAYER) then
-		populateList(ply, INVENTORY_SIDE_LEFT)
-	end
-
+	populateList(ply, INVENTORY_SIDE_LEFT)
 	populateList(ply, INVENTORY_SIDE_RIGHT)
 end
 net.Receive("InventoryActionDropItem", HandleInventoryActionDropItem)

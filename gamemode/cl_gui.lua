@@ -7,10 +7,10 @@ surface.CreateFont(
 )
 
 surface.CreateFont(
-	"Roboto32",
+	"Roboto28",
 	{
 		font = "Roboto",
-		size = 36,
+		size = 28,
 	}
 )
 function ChangeTeamGUI(ply, cmd, args)
@@ -110,7 +110,7 @@ local function addLabel(parent, newdata)
 	return label
 end
 
-local function addItem(listLayout, item, action, actionFunc)
+local function addItem(listLayout, item, action, actionFunc, enabled)
 	local panel = listLayout:Add("DPanel")
 	panel:DockMargin(5, 5, 5, 0)
 	panel:SetBackgroundColor(Color(0, 0, 0, 230))
@@ -118,25 +118,28 @@ local function addItem(listLayout, item, action, actionFunc)
 
 	addLabel(panel, {
 		text = item.displayname,
-		font = "Roboto32",
+		font = "Roboto28",
 		dock = LEFT,
 		marginLeft = 10
 	})
 
-	local classSelect = vgui.Create("DButton", panel)
-	classSelect:Dock(RIGHT)
-	classSelect:DockMargin(0, 6, 6, 6)
-	classSelect:SetText(action)
-	classSelect:SetFont("Roboto32")
-	classSelect:SetWide(120)
-	classSelect.DoClick = actionFunc
+	local button = vgui.Create("DButton", panel)
+	button:Dock(RIGHT)
+	button:DockMargin(0, 6, 6, 6)
+	button:SetText(action)
+	button:SetFont("Roboto28")
+	button:SetWide(120)
+	if (enabled) then
+		button.DoClick = actionFunc
+	end
+	button:SetEnabled(enabled)
 
 	addLabel(panel, {
 		text = item.weight,
-		font = "Roboto32",
+		font = "Roboto28",
 		dock = RIGHT,
-		marginRight = 20,
-		forceWide = 40
+		marginRight = 10,
+		forceWide = 30
 	})
 
 	addLabel(panel, {
@@ -272,24 +275,27 @@ function populateList()
 		child:Remove()
 	end
 
-	local weight = 0
 	-- Populate items
 	for k,item in pairs(inv.data) do
-		weight = weight + INVENTORY.GetItemData(item).weight
+		local enabled = true
+		if ((inv.filterType != 0) and (INVENTORY.GetItemData(item).category != inv.filterType)) then
+			enabled = false
+		end
+
 		addItem(invPanel.listLayout, INVENTORY.GetItemData(item), inv.action, function()
 			net.Start(inv.actionMessage)
 				net.WriteInt(k, 16)
 				net.WriteString(item)
 			net.SendToServer()
-		end)
+		end, enabled)
 	end
 
 	if (inv.max != 0) then
-		invPanel.weightLabel:SetText(tostring(weight) .. "/" .. inv.max)
+		invPanel.weightLabel:SetText(inv.weight .. "/" .. inv.max)
 		invPanel.weightLabel:SizeToContents()
 
 		-- Set Color to show level of fullness
-		local weightRation = weight / inv.max
+		local weightRation = inv.weight / inv.max
 		local color = nil
 		if (weightRation == 1) then
 			color = Color(255, 0, 0, 255)
