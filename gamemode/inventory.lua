@@ -80,7 +80,8 @@ function populateList(ply, id)
 		inv.actionMessage = "InventoryActionDropItem"
 		if (getInventoryType(ply) == INVENTORY_TYPE_ENTITY) then
 			inv.filterType = getInventoryEntity(ply):InventoryFilter()
-		elseif (getInventoryType(ply) == INVENTORY_TYPE_SPAWN) then
+		elseif (getInventoryType(ply) == INVENTORY_TYPE_SPAWN or
+				getInventoryType(ply) == INVENTORY_TYPE_PLAYER) then
 			inv.filterType = INVENTORY_CAT_NONE
 		end
 	else

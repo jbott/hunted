@@ -9,6 +9,7 @@ SWEP.PrintName       = "XM1014"
 SWEP.InvSpawnable    = true
 SWEP.InvWeight       = 8
 SWEP.InvMaxItems     = 1
+SWEP.InvCategory     = "Primary"
 SWEP.Slot            = 2
 SWEP.SlotPos         = 1
 if (CLIENT) then

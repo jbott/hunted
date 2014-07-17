@@ -10,6 +10,7 @@ SWEP.PrintName       = "G3SG1"
 SWEP.InvSpawnable    = true
 SWEP.InvWeight       = 12
 SWEP.InvMaxItems     = 1
+SWEP.InvCategory     = "Primary"
 SWEP.Slot            = 2
 SWEP.SlotPos         = 1
 if (CLIENT) then

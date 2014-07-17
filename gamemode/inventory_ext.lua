@@ -58,19 +58,49 @@ end
 function entmeta:InventoryAdd(item)
 	if (!self:HasInventory()) then return end
 	if (self:InventoryMax() == 0 or
-		self:InventoryWeight() + INVENTORY.GetItemData(item).weight <= self:InventoryMax()) then
+		self:InventoryWeight() + INVENTORY.GetItemData(item).weight <= self:InventoryMax() and
+		self:InventoryCount(item) < INVENTORY.GetItemData(item).max) then
+
 		table.insert(inventoryTable[self:EntIndex()], item)
+		if (self:IsPlayer()) then
+			-- Reflect on player
+			if (INVENTORY.GetItemData(item).category == INVENTORY_CAT_PRIMARY or
+				INVENTORY.GetItemData(item).category == INVENTORY_CAT_SECONDARY) then
+					-- Weapon
+					self:Give(item)
+			end
+		end
 	end
 end
 
 function entmeta:InventoryRemove(id)
 	if (!self:HasInventory()) then return end
+	local item = inventoryTable[self:EntIndex()][id] or ""
 	table.remove(inventoryTable[self:EntIndex()], id)
+	if (self:IsPlayer()) then
+		-- Reflect on player
+		if (INVENTORY.GetItemData(item).category == INVENTORY_CAT_PRIMARY or
+			INVENTORY.GetItemData(item).category == INVENTORY_CAT_SECONDARY) then
+				-- Weapon
+				self:StripWeapon(item)
+		end
+	end
 end
 
 function entmeta:InventoryHasItem(item)
 	if (!self:HasInventory()) then return false end
 	return table.HasValue(inventoryTable[self:EntIndex()], item)
+end
+
+function entmeta:InventoryCount(item)
+	if (!self:HasInventory()) then return false end
+	local count = 0
+	for _,v in pairs(self:GetInventory()) do
+		if (v == item) then
+			count = count + 1
+		end
+	end
+	return count
 end
 
 function entmeta:InventoryTake(ent, id)

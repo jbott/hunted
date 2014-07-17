@@ -9,6 +9,7 @@ SWEP.PrintName    = "AK-47"
 SWEP.InvSpawnable = true
 SWEP.InvWeight    = 8
 SWEP.InvMaxItems  = 1
+SWEP.InvCategory  = "Primary"
 SWEP.Slot         = 1
 SWEP.SlotPos      = 1
 if (CLIENT) then

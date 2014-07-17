@@ -10,6 +10,7 @@ SWEP.PrintName       = "AWP"
 SWEP.InvSpawnable    = true
 SWEP.InvWeight       = 14
 SWEP.InvMaxItems     = 1
+SWEP.InvCategory     = "Primary"
 SWEP.Slot            = 2
 SWEP.SlotPos         = 1
 if (CLIENT) then

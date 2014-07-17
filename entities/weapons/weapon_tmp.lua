@@ -9,6 +9,7 @@ SWEP.PrintName       = "TMP"
 SWEP.InvSpawnable    = true
 SWEP.InvWeight       = 3
 SWEP.InvMaxItems     = 1
+SWEP.InvCategory     = "Primary"
 SWEP.Slot            = 3
 SWEP.SlotPos         = 1
 if (CLIENT) then

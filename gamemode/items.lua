@@ -29,6 +29,21 @@ local items = {
 	}
 }
 
+local catTranslation = {
+	none      = INVENTORY_CAT_NONE,
+	primary   = INVENTORY_CAT_PRIMARY,
+	secondary = INVENTORY_CAT_SECONDARY,
+	ammo      = INVENTORY_CAT_AMMO,
+	medical   = INVENTORY_CAT_MEDICAL,
+	expl      = INVENTORY_CAT_EXPL,
+	misc      = INVENTORY_CAT_MISC
+}
+
+function translateCategory(cat)
+	cat = cat or ""
+	return catTranslation[string.lower(cat)] or INVENTORY_CAT_NONE
+end
+
 function addInventoryItems()
 	for _, weapon in pairs(weapons.GetList()) do
 		if (weapon.InvSpawnable) then
@@ -37,7 +52,7 @@ function addInventoryItems()
 				weight = weapon.InvWeight or 0,
 				max = weapon.InvMaxItems or 0,
 				restrict = weapon.InvRestrict or 0,
-				category = weapon.InvCategory or INVENTORY_CAT_NONE
+				category = translateCategory(weapon.InvCategory)
 			})
 		end
 	end

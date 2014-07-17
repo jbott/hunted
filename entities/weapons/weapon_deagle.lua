@@ -9,6 +9,7 @@ SWEP.PrintName          = "Desert Eagle"
 SWEP.InvSpawnable       = true
 SWEP.InvWeight          = 4
 SWEP.InvMaxItems        = 1
+SWEP.InvCategory        = "Secondary"
 SWEP.Slot               = 3
 SWEP.SlotPos            = 1
 if (CLIENT) then
