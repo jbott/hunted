@@ -63,3 +63,7 @@ function SWEP:Deploy()
         vm:SendViewModelMatchingSequence( vm:LookupSequence( "fists_draw" ) )
         return true
 end
+
+function SWEP:PreDrop()
+        self.Owner:NightVision(false)
+end

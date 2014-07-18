@@ -110,6 +110,9 @@ function entmeta:InventoryRemove(id, drop)
 				end
 				self:DropNamedWeapon(item.name)
 			else
+				if (weapon.PreDrop) then
+					weapon:PreDrop()
+				end
 				self:StripWeapon(item.name)
 			end
 		elseif (INVENTORY.GetItemData(item.name).category == INVENTORY_CAT_AMMO) then
