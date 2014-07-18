@@ -31,7 +31,7 @@ SWEP.ViewModelFOV  = 54
 
 --- Primary ---
 SWEP.Primary.Automatic      = false
-SWEP.Primary.Delay          = 1
+SWEP.Primary.Delay          = 1.5
 SWEP.Primary.Recoil         = 9
 SWEP.Primary.Damage         = 75
 SWEP.Primary.Cone           = 0.2
