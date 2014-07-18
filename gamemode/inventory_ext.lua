@@ -50,11 +50,10 @@ end
 
 function entmeta:InventoryAdd(item, extraData)
 	if (!self:HasInventory()) then return end
-	self:UpdateInventory()
 	local extraData = extraData or {}
 	if (self:InventoryMax() == 0 or
-		self:InventoryWeight() + INVENTORY.GetItemData(item).weight <= self:InventoryMax() and
-		INVENTORY.GetItemData(item).max == 0 or self:InventoryCount(item) < INVENTORY.GetItemData(item).max) then
+		(self:InventoryWeight() + INVENTORY.GetItemData(item).weight <= self:InventoryMax() and
+		(INVENTORY.GetItemData(item).max == 0 or self:InventoryCount(item) < INVENTORY.GetItemData(item).max))) then
 
 		local itemData = { name = item }
 		table.Merge(itemData, extraData)
