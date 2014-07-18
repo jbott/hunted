@@ -10,6 +10,30 @@ function GetAllItems()
 	return ret
 end
 
+function GetAllItemsSortedByCategory()
+	local ret = {}
+	for k,v in pairs(table.GetKeys(items)) do
+		local category = GetItemData(v).category
+		ret[category] = ret[category] or {}
+		table.insert(ret[category], { name = v, displayname = GetItemData(v).displayname})
+	end
+	for _,v in pairs(ret) do
+		table.SortByMember(v, "displayname", true)
+	end
+
+
+	local retSorted = {}
+	for k,v in pairs(ret) do
+		if (k != 1) then
+			table.insert(retSorted, {name = "spacer_label"})
+		end
+		table.insert(retSorted, {name = "category_label", displayname = invCatNames[k]})
+		table.Add(retSorted, v)
+	end
+
+	return retSorted
+end
+
 function GetAllItemsWithData()
 	local ret = {}
 	for k,v in pairs(items) do
@@ -31,7 +55,7 @@ end
 
 function GetItemData(item)
 	if (items[tostring(item)] == nil) then
-		return nil
+		return {}
 	end
 
 	local data = { name = tostring(item) }

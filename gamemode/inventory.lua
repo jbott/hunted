@@ -114,7 +114,7 @@ function populateList(ply, id)
 			inv.weight = ent:InventoryWeight()
 		elseif (getInventoryType(ply) == INVENTORY_TYPE_SPAWN) then
 			inv.name = "Spawn"
-			inv.data = INVENTORY.GetAllItems()
+			inv.data = INVENTORY.GetAllItemsSortedByCategory()
 			inv.max = 0
 		end
 		inv.action = "Take"

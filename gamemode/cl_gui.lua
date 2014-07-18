@@ -7,6 +7,14 @@ surface.CreateFont(
 )
 
 surface.CreateFont(
+	"Roboto24",
+	{
+		font = "Roboto",
+		size = 24,
+	}
+)
+
+surface.CreateFont(
 	"Roboto28",
 	{
 		font = "Roboto",
@@ -111,6 +119,28 @@ local function addLabel(parent, newdata)
 end
 
 local function addItem(listLayout, item, action, actionFunc, enabled)
+	if (item.name == "spacer_label") then
+		local panel = listLayout:Add("DPanel")
+		panel:DockMargin(5, 5, 5, 0)
+		panel:SetBackgroundColor(Color(0, 0, 0, 0))
+		panel:SetTall(5)
+		return
+	end
+	if (item.name == "category_label") then
+		local panel = listLayout:Add("DPanel")
+		panel:DockMargin(5, 5, 5, 0)
+		panel:SetBackgroundColor(Color(0, 0, 0, 200))
+		panel:SetTall(40)
+
+		addLabel(panel, {
+			text = item.displayname,
+			font = "Roboto24",
+			dock = LEFT,
+			marginLeft = 40
+		})
+		return
+	end
+
 	local panel = listLayout:Add("DPanel")
 	panel:DockMargin(5, 5, 5, 0)
 	panel:SetBackgroundColor(Color(0, 0, 0, 230))

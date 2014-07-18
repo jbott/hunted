@@ -24,10 +24,19 @@ INVENTORY_SIDE_LEFT     = 2
 INVENTORY_CAT_NONE      = 0
 INVENTORY_CAT_PRIMARY   = 1
 INVENTORY_CAT_SECONDARY = 2
-INVENTORY_CAT_AMMO      = 3
-INVENTORY_CAT_MEDICAL   = 4
-INVENTORY_CAT_EXPL      = 5
-INVENTORY_CAT_MISC      = 6
+INVENTORY_CAT_MEDICAL   = 3
+INVENTORY_CAT_EXPL      = 4
+INVENTORY_CAT_MISC      = 5
+INVENTORY_CAT_AMMO      = 6
+
+invCatNames = {
+	"Primary",
+	"Secondary",
+	"Medical",
+	"Explosive",
+	"Miscellaneous",
+	"Ammo"
+}
 
 include("items.lua")
 
