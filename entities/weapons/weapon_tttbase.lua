@@ -301,12 +301,14 @@ function SWEP:SecondaryAttack()
    --if self:GetNextSecondaryFire() > CurTime() then return end
 
    self:SetIronsights(not self:GetIronsights())
+   if (SERVER) then self.Owner:SlowWalk(self:GetIronsights()) end
 
    self:SetNextSecondaryFire(CurTime() + 0.3)
 end
 
 function SWEP:Deploy()
    self:SetIronsights(false)
+   if (SERVER) then self.Owner:SlowWalk(self:GetIronsights()) end
    return true
 end
 
@@ -314,12 +316,14 @@ function SWEP:Reload()
 	if ( self:Clip1() == self.Primary.ClipSize or self.Owner:GetAmmoCount( self.Primary.Ammo ) <= 0 ) then return end
    self:DefaultReload(self.ReloadAnim)
    self:SetIronsights( false )
+   if (SERVER) then self.Owner:SlowWalk(self:GetIronsights()) end
 end
 
 
 function SWEP:OnRestore()
    self.NextSecondaryAttack = 0
    self:SetIronsights( false )
+   if (SERVER) then self.Owner:SlowWalk(self:GetIronsights()) end
 end
 
 function SWEP:Ammo1()
@@ -329,6 +333,8 @@ end
 -- The OnDrop() hook is useless for this as it happens AFTER the drop. OwnerChange
 -- does not occur when a drop happens for some reason. Hence this thing.
 function SWEP:PreDrop()
+   self:SetIronsights(false)
+   if (SERVER) then self.Owner:SlowWalk(self:GetIronsights()) end
 end
 
 function SWEP:DampenDrop()
@@ -398,16 +404,17 @@ function SWEP:Initialize()
    end
 end
 
-function SWEP:Think()
-   if SERVER and (not self.NoSights) then
-      self.Owner:SlowWalk(self:GetIronsights())
-   end
+function SWEP:Holster()
+   self:SetIronsights(false)
+   if (SERVER) then self.Owner:SlowWalk(self:GetIronsights()) end
+   return true
 end
 
 function SWEP:DyingShot()
    local fired = false
    if self:GetIronsights() then
       self:SetIronsights(false)
+      if (SERVER) then self.Owner:SlowWalk(self:GetIronsights()) end
 
       if self:GetNextPrimaryFire() > CurTime() then
          return fired

@@ -53,107 +53,89 @@ SWEP.IronSightsAng      = Vector( 2.6, 1.37, 3.5 )
 
 ---- Functions ----
 function SWEP:GetPrimaryCone()
-   return self:GetIronsights() and self.Primary.IronsightsCone or self.Primary.Cone
+	return self:GetIronsights() and self.Primary.IronsightsCone or self.Primary.Cone
 end
 
 
 function SWEP:SetZoom(state)
-    if CLIENT then
-       return
-    elseif IsValid(self.Owner) and self.Owner:IsPlayer() then
-       if state then
-          self.Owner:SetFOV(self.ZoomFOV, 0.3)
-       else
-          self.Owner:SetFOV(0, 0.2)
-       end
-    end
+	if CLIENT then return end
+	if !IsValid(self.Owner) or !self.Owner:IsPlayer() then return end
+	self.Owner:SetFOV(state and self.ZoomFOV or 0, 0.3)
 end
 
 -- Add some zoom to ironsights for this gun
 function SWEP:SecondaryAttack()
-    if not self.IronSightsPos then return end
-    if self:GetNextSecondaryFire() > CurTime() then return end
+	self.BaseClass.SecondaryAttack(self)
 
-    local bIronsights = not self:GetIronsights()
-
-    self:SetIronsights( bIronsights )
-
-    if SERVER then
-        self:SetZoom(bIronsights)
-     else
-        self:EmitSound(self.Secondary.Sound)
-    end
-
-    self:SetNextSecondaryFire( CurTime() + 0.3)
+	if SERVER then
+		self:SetZoom(self:GetIronsights())
+	else
+		self:EmitSound(self.Secondary.Sound)
+	end
 end
 
 function SWEP:PreDrop()
-    self:SetZoom(false)
-    self:SetIronsights(false)
-    return self.BaseClass.PreDrop(self)
+	self:SetZoom(false)
+	return self.BaseClass.PreDrop(self)
 end
 
 function SWEP:Reload()
-	if ( self:Clip1() == self.Primary.ClipSize or self.Owner:GetAmmoCount( self.Primary.Ammo ) <= 0 ) then return end
-    self:DefaultReload( ACT_VM_RELOAD )
-    self:SetIronsights( false )
-    self:SetZoom( false )
+	self:SetZoom( false )
+	self.BaseClass.Reload(self)
 end
 
 
 function SWEP:Holster()
-    self:SetIronsights(false)
-    self:SetZoom(false)
-    return true
+	self:SetZoom(false)
+	return self.BaseClass.Holster(self)
 end
 
 if CLIENT then
-   local scope = surface.GetTextureID("sprites/scope")
-   function SWEP:DrawHUD()
-      if self:GetIronsights() then
-         surface.SetDrawColor( 0, 0, 0, 255 )
+	local scope = surface.GetTextureID("sprites/scope")
+	function SWEP:DrawHUD()
+		if self:GetIronsights() then
+			surface.SetDrawColor( 0, 0, 0, 255 )
 
-         local x = ScrW() / 2.0
-         local y = ScrH() / 2.0
-         local scope_size = ScrH()
+			local x = ScrW() / 2.0
+			local y = ScrH() / 2.0
+			local scope_size = ScrH()
 
-         -- crosshair
-         local gap = 80
-         local length = scope_size
-         surface.DrawLine( x - length, y, x - gap, y )
-         surface.DrawLine( x + length, y, x + gap, y )
-         surface.DrawLine( x, y - length, x, y - gap )
-         surface.DrawLine( x, y + length, x, y + gap )
+			-- crosshair
+			local gap = 80
+			local length = scope_size
+			surface.DrawLine( x - length, y, x - gap, y )
+			surface.DrawLine( x + length, y, x + gap, y )
+			surface.DrawLine( x, y - length, x, y - gap )
+			surface.DrawLine( x, y + length, x, y + gap )
 
-         gap = 0
-         length = 50
-         surface.DrawLine( x - length, y, x - gap, y )
-         surface.DrawLine( x + length, y, x + gap, y )
-         surface.DrawLine( x, y - length, x, y - gap )
-         surface.DrawLine( x, y + length, x, y + gap )
+			gap = 0
+			length = 50
+			surface.DrawLine( x - length, y, x - gap, y )
+			surface.DrawLine( x + length, y, x + gap, y )
+			surface.DrawLine( x, y - length, x, y - gap )
+			surface.DrawLine( x, y + length, x, y + gap )
 
+			-- cover edges
+			local sh = scope_size / 2
+			local w = (x - sh) + 2
+			surface.DrawRect(0, 0, w, scope_size)
+			surface.DrawRect(x + sh - 2, 0, w, scope_size)
 
-         -- cover edges
-         local sh = scope_size / 2
-         local w = (x - sh) + 2
-         surface.DrawRect(0, 0, w, scope_size)
-         surface.DrawRect(x + sh - 2, 0, w, scope_size)
+			surface.SetDrawColor(255, 0, 0, 255)
+			surface.DrawLine(x, y, x + 1, y + 1)
 
-         surface.SetDrawColor(255, 0, 0, 255)
-         surface.DrawLine(x, y, x + 1, y + 1)
+			-- scope
+			surface.SetTexture(scope)
+			surface.SetDrawColor(255, 255, 255, 255)
 
-         -- scope
-         surface.SetTexture(scope)
-         surface.SetDrawColor(255, 255, 255, 255)
+			surface.DrawTexturedRectRotated(x, y, scope_size, scope_size, 0)
 
-         surface.DrawTexturedRectRotated(x, y, scope_size, scope_size, 0)
+		else
+			return self.BaseClass.DrawHUD(self)
+		end
+	end
 
-      else
-         return self.BaseClass.DrawHUD(self)
-      end
-   end
-
-   function SWEP:AdjustMouseSensitivity()
-      return (self:GetIronsights() and 0.2) or nil
-   end
+	function SWEP:AdjustMouseSensitivity()
+		return (self:GetIronsights() and 0.2) or nil
+	end
 end
