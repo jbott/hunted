@@ -254,7 +254,6 @@ function InventoryGUI()
 		net.SendToServer()
 	end
 	frame.OnKeyCodePressed = function(self, keyCode)
-		print(keyCode)
 		if (keyCode == KEY_F1 or
 			keyCode == KEY_E) then
 			self:Close()
