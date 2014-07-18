@@ -122,6 +122,14 @@ local function addItem(listLayout, item, action, actionFunc, enabled)
 		dock = LEFT,
 		marginLeft = 10
 	})
+	if (item.clip1 && item.clip1Max != -1) then
+		local ammoLabel = addLabel(panel, {
+			text = tostring(item.clip1) .. "/" .. tostring(item.clip1Max),
+			font = "Roboto16",
+			dock = LEFT,
+			marginLeft = 10
+		})
+	end
 
 	local button = vgui.Create("DButton", panel)
 	button:Dock(RIGHT)

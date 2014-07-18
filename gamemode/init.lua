@@ -35,6 +35,19 @@ end
 function GM:InitPostEntity()
 	-- Create map entities
 
+	-- Flares
+	local flare = ents.Create("env_flare")
+	flare:SetPos(Vector(-3770.753418,-3429.978027,103.968750))
+	flare:SetKeyValue("spawnflags", 4) -- Infinite
+	flare:SetKeyValue("scale", 10)
+	flare:Spawn()
+
+	local flare = ents.Create("env_flare")
+	flare:SetPos(Vector(-3374.827637, -3555.890381, 103.968750))
+	flare:SetKeyValue("spawnflags", 4) -- Infinite
+	flare:SetKeyValue("scale", 10)
+	flare:Spawn()
+
 	-- Outside
 	local box = ents.Create("box_ammo")
 	box:SetPos(Vector(-3739.175781, -3580.487793, 14.444678))

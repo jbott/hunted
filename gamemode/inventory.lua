@@ -28,6 +28,7 @@ end
 
 function HandleInventoryOpen(len, ply)
 	setInventoryType(ply, INVENTORY_TYPE_PLAYER)
+	ply:UpdateInventory()
 	net.Start("InventoryOpenResponse")
 		net.WriteInt(getInventoryType(ply), 3)
 	net.Send(ply)
@@ -53,8 +54,12 @@ function invUse(ply, key)
 			local class = ent:GetClass()
 			-- Pickup weapons
 			ply:InventoryAdd(class)
-			ply:GetWeapon(class):SetClip1(ent.clip1)
-			ply:GetWeapon(class):SetClip2(ent.clip2)
+			if (ent.clip1) then
+				ply:GetWeapon(class):SetClip1(ent.clip1)
+			end
+			if (ent.clip2) then
+				ply:GetWeapon(class):SetClip2(ent.clip2)
+			end
 			ent:Remove()
 			--ply:PickupObject(ent)
 			return false
@@ -74,6 +79,7 @@ end
 hook.Add("KeyPress", "InventoryUseHook", invUse)
 
 function invDeath(victim, inflictor, attacker)
+	victim:UpdateInventory()
 	net.Start("InventoryForceClose")
 	net.Send(victim)
 end

@@ -26,6 +26,13 @@ local items = {
 		category = INVENTORY_CAT_AMMO,
 		ammoname = "SniperRound",
 		ammoquantiy = 10
+	},
+	ammo_flare = {
+		displayname = "Ammo - Flare (4)",
+		weight = 3,
+		category = INVENTORY_CAT_AMMO,
+		ammoname = "AR2AltFire",
+		ammoquantiy = 4
 	}
 }
 
@@ -52,7 +59,8 @@ function addInventoryItems()
 				weight = weapon.InvWeight or 0,
 				max = weapon.InvMaxItems or 0,
 				restrict = weapon.InvRestrict or 0,
-				category = translateCategory(weapon.InvCategory)
+				category = translateCategory(weapon.InvCategory),
+				clip1Max = weapon.Primary.ClipSize or -1
 			})
 		end
 	end

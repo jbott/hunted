@@ -11,7 +11,7 @@ function entmeta:SetHasInventory(val)
 end
 
 function entmeta:HasInventory()
-	return self.HasInventory != nil
+	return self.Inventory != nil
 end
 
 function entmeta:GetInventory()
@@ -50,6 +50,7 @@ end
 
 function entmeta:InventoryAdd(item, extraData)
 	if (!self:HasInventory()) then return end
+	self:UpdateInventory()
 	local extraData = extraData or {}
 	if (self:InventoryMax() == 0 or
 		self:InventoryWeight() + INVENTORY.GetItemData(item).weight <= self:InventoryMax() and
@@ -62,7 +63,8 @@ function entmeta:InventoryAdd(item, extraData)
 		if (self:IsPlayer()) then
 			-- Reflect on player
 			if (INVENTORY.GetItemData(item).category == INVENTORY_CAT_PRIMARY or
-				INVENTORY.GetItemData(item).category == INVENTORY_CAT_SECONDARY) then
+				INVENTORY.GetItemData(item).category == INVENTORY_CAT_SECONDARY or
+				INVENTORY.GetItemData(item).category == INVENTORY_CAT_MISC) then
 				-- Weapon
 				self:Give(item)
 				if (itemData.clip1) then
@@ -74,29 +76,35 @@ function entmeta:InventoryAdd(item, extraData)
 			end
 		end
 	end
+	self:UpdateInventory()
 end
 
 function entmeta:InventoryRemove(id, drop)
 	local drop = drop or false
 	if (!self:HasInventory()) then return end
+	self:UpdateInventory()
 	local item = self:GetInventory()[id]
 	table.remove(self:GetInventory(), id)
 	if (self:IsPlayer()) then
 		-- Reflect on player
 		if (INVENTORY.GetItemData(item.name).category == INVENTORY_CAT_PRIMARY or
-			INVENTORY.GetItemData(item.name).category == INVENTORY_CAT_SECONDARY) then
+			INVENTORY.GetItemData(item.name).category == INVENTORY_CAT_SECONDARY or
+			INVENTORY.GetItemData(item.name).category == INVENTORY_CAT_MISC) then
 			local weapon = self:GetWeapon(item.name)
-			-- Update clip data
-			item.clip1 = weapon:Clip1()
-			item.clip2 = weapon:Clip2()
 
 			-- Weapon
 			if (drop) then
 				local weapon = self:GetWeapon(item.name)
 				weapon.isDropped = true
-				weapon.clip1 = item.clip1
-				weapon.clip2 = item.clip2
-				weapon:PreDrop()
+				if (item.clip1 != -1) then
+					weapon.clip1 = item.clip1
+				end
+				if (item.clip2 != -1) then
+					weapon.clip2 = item.clip2
+				end
+				if (weapon.PreDrop) then
+					weapon:PreDrop()
+				end
 				self:DropNamedWeapon(item.name)
 			else
 				self:StripWeapon(item.name)
@@ -117,6 +125,16 @@ function entmeta:InventoryHasItem(item)
 	return false
 end
 
+function entmeta:InventoryGetItem(item)
+	if (!self:HasInventory()) then return false end
+	for _,v in pairs(self:GetInventory()) do
+		if (v.name == item) then
+			return v
+		end
+	end
+	return nil
+end
+
 function entmeta:InventoryCount(item)
 	if (!self:HasInventory()) then return false end
 	local count = 0
@@ -135,5 +153,25 @@ function entmeta:InventoryTake(ent, id)
 	if (self:InventoryWeight() + INVENTORY.GetItemData(item.name).weight <= self:InventoryMax()) then
 		item = ent:InventoryRemove(id) -- Allow for last minute updates to be applied to the data
 		self:InventoryAdd(item.name, item)
+	end
+end
+
+function entmeta:UpdateInventory()
+	if (!self:IsPlayer()) then return end
+	-- Loop over weapons updating current clip
+	for _,wep in pairs(self:GetWeapons()) do
+		local item = self:InventoryGetItem(wep:GetClass())
+		if (item != nil) then
+			if (wep.Clip1) then
+				item.clip1 = wep:Clip1()
+			else
+				item.clip1 = -1
+			end
+			if (wep.Clip2) then
+				item.clip2 = wep:Clip2()
+			else
+				item.clip2 = -1
+			end
+		end
 	end
 end

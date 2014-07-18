@@ -19,6 +19,7 @@ function ENT:Initialize()
 	self:InventoryAdd("ammo_rifle")
 	self:InventoryAdd("ammo_shotgun")
 	self:InventoryAdd("ammo_sniper")
+	self:InventoryAdd("ammo_flare")
 	self:SetInventoryFilter(INVENTORY_CAT_AMMO)
 
 	local phys = self:GetPhysicsObject()

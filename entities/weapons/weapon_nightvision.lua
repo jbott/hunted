@@ -7,6 +7,7 @@ SWEP.DrawWeaponInfoBox  = false
 SWEP.InvSpawnable    = true
 SWEP.InvWeight       = 2
 SWEP.InvMaxItems     = 1
+SWEP.InvCategory     = "Misc"
 
 SWEP.Spawnable			= true
 SWEP.UseHands			= true
