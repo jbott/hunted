@@ -66,6 +66,7 @@ function invUse(ply, key)
 		end
 
 		if (ent:HasInventory()) then
+			ply:UpdateInventory()
 			setInventoryType(ply, INVENTORY_TYPE_ENTITY)
 			setInventoryEntity(ply, ent)
 

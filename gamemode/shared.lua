@@ -41,8 +41,3 @@ function GM:CreateTeams()
 	team.SetUp(TEAM_HUNTED, "Hunted", Color(0, 0, 200, 255), false)
 	team.SetUp(TEAM_SPEC, "Spectator", Color(200, 200, 200, 255), true)
 end
-
-concommand.Add("force_inv_load", function()
-	hook.Call("InventoryReload")
-	BroadcastLua([[hook.Call("InventoryReload")]])
-end)

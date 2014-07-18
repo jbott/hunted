@@ -58,6 +58,7 @@ function GM:InitPostEntity()
 	-- Hack to open the spawn menu
 	box.Use = function(activator, caller, useType, value)
 		setInventoryType(caller, INVENTORY_TYPE_SPAWN)
+		caller:UpdateInventory()
 		net.Start("InventoryOpenResponse")
 			net.WriteInt(getInventoryType(caller), 3)
 		net.Send(caller)

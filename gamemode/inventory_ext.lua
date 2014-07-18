@@ -58,7 +58,6 @@ function entmeta:InventoryAdd(item, extraData)
 		local itemData = { name = item }
 		table.Merge(itemData, extraData)
 
-		table.insert(self:GetInventory(), itemData)
 		if (self:IsPlayer()) then
 			-- Reflect on player
 			if (INVENTORY.GetItemData(item).category == INVENTORY_CAT_PRIMARY or
@@ -72,8 +71,13 @@ function entmeta:InventoryAdd(item, extraData)
 				if (itemData.clip2) then
 					self:GetWeapon(item):SetClip2(itemData.clip2)
 				end
+			elseif (INVENTORY.GetItemData(item).category == INVENTORY_CAT_AMMO) then
+				itemData.ammoquantity = itemData.ammoquantity or INVENTORY.GetItemData(item).ammoquantity
+				itemData.ammoname = INVENTORY.GetItemData(item).ammoname
+				self:GiveAmmo(itemData.ammoquantity, itemData.ammoname, true)
 			end
 		end
+		table.insert(self:GetInventory(), itemData)
 	end
 	self:UpdateInventory()
 end
@@ -108,7 +112,8 @@ function entmeta:InventoryRemove(id, drop)
 			else
 				self:StripWeapon(item.name)
 			end
-
+		elseif (INVENTORY.GetItemData(item.name).category == INVENTORY_CAT_AMMO) then
+			self:RemoveAmmo(item.ammoquantity, item.ammoname)
 		end
 	end
 	return item
@@ -170,6 +175,55 @@ function entmeta:UpdateInventory()
 				item.clip2 = wep:Clip2()
 			else
 				item.clip2 = -1
+			end
+		end
+	end
+
+	self:UpdateInvAmmo()
+end
+
+function entmeta:UpdateInvAmmo()
+	if (!self:IsPlayer()) then return end
+	local ammoTotals = {}
+	for _,item in pairs(self:GetInventory()) do
+		if (INVENTORY.GetItemData(item.name).category == INVENTORY_CAT_AMMO) then
+			ammoTotals[item.ammoname] = (ammoTotals[item.ammoname] or 0) + item.ammoquantity
+		end
+	end
+
+	for item,count in pairs(ammoTotals) do
+		local diff = self:GetAmmoCount(item) - count
+	if (diff > 0) then
+			print("ERROR: More ammo than in inventory!")
+			return
+		end
+		if (diff < 0) then
+			self:InventoryRemoveAmmo(item, diff)
+		end
+	end
+end
+
+function entmeta:InventoryRemoveAmmo(type, diff)
+	if (!self:IsPlayer()) then return end
+	while (diff < 0) do
+		local leastAmount = 10000
+		for _,item in pairs(self:GetInventory()) do
+			if (item.ammoname == type && item.ammoquantity < leastAmount) then
+				leastAmount = item.ammoquantity
+			end
+		end
+
+		for k,item in pairs(self:GetInventory()) do
+			if (item.ammoname == type && item.ammoquantity == leastAmount) then
+				local sub = math.min(item.ammoquantity, -diff)
+				item.ammoquantity = item.ammoquantity - sub
+				diff = diff + sub
+				if (item.ammoquantity == 0) then
+					table.remove(self:GetInventory(), k)
+				else
+					self:GetInventory()[k].ammoquantity = item.ammoquantity
+				end
+				break
 			end
 		end
 	end

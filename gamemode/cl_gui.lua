@@ -122,9 +122,10 @@ local function addItem(listLayout, item, action, actionFunc, enabled)
 		dock = LEFT,
 		marginLeft = 10
 	})
-	if (item.clip1 && item.clip1Max != -1) then
+	if (item.ammoquantity) then item.clip1 = item.ammoquantity end
+	if (item.clip1 and item.clip1max and item.clip1max != -1) then
 		local ammoLabel = addLabel(panel, {
-			text = tostring(item.clip1) .. "/" .. tostring(item.clip1Max),
+			text = tostring(item.clip1) .. "/" .. tostring(item.clip1max),
 			font = "Roboto16",
 			dock = LEFT,
 			marginLeft = 10
@@ -289,8 +290,9 @@ function populateList()
 		if ((inv.filterType != 0) and (INVENTORY.GetItemData(item.name).category != inv.filterType)) then
 			enabled = false
 		end
-		table.Merge(item, INVENTORY.GetItemData(item.name))
-		addItem(invPanel.listLayout, item, inv.action, function()
+		local itemData = INVENTORY.GetItemData(item.name)
+		table.Merge(itemData, item) -- Merge this way to keep item specific data
+		addItem(invPanel.listLayout, itemData, inv.action, function()
 			net.Start(inv.actionMessage)
 				net.WriteInt(k, 16)
 				net.WriteString(item.name)

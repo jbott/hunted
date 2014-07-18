@@ -24,9 +24,7 @@ PLAYER.Weapons = {
 	"weapon_flaregun"
 }
 
-PLAYER.Ammo = {
-	{"AR2AltFire", 4}
-}
+PLAYER.Ammo = {}
 
 ---- Functions ----
 function PLAYER:GetDisplayName()

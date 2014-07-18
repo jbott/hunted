@@ -1,38 +1,38 @@
 local items = {
 	ammo_pistol = {
-		displayname = "Ammo - Pistol (24)",
+		displayname = "Ammo - Pistol",
 		weight = 1,
 		category = INVENTORY_CAT_AMMO,
 		ammoname = "Pistol",
-		ammoquantiy = 24
+		ammoquantity = 24
 	},
 	ammo_rifle = {
-		displayname = "Ammo - Rifle (60)",
+		displayname = "Ammo - Rifle",
 		weight = 2,
 		category = INVENTORY_CAT_AMMO,
 		ammoname = "AR2",
-		ammoquantiy = 60
+		ammoquantity = 60
 	},
 	ammo_shotgun = {
-		displayname = "Ammo - Shotgun (12)",
+		displayname = "Ammo - Shotgun",
 		weight = 2,
 		category = INVENTORY_CAT_AMMO,
 		ammoname = "Buckshot",
-		ammoquantiy = 12
+		ammoquantity = 12
 	},
 	ammo_sniper = {
-		displayname = "Ammo - Sniper (10)",
+		displayname = "Ammo - Sniper",
 		weight = 3,
 		category = INVENTORY_CAT_AMMO,
 		ammoname = "SniperRound",
-		ammoquantiy = 10
+		ammoquantity = 10
 	},
 	ammo_flare = {
-		displayname = "Ammo - Flare (4)",
+		displayname = "Ammo - Flare",
 		weight = 3,
 		category = INVENTORY_CAT_AMMO,
 		ammoname = "AR2AltFire",
-		ammoquantiy = 4
+		ammoquantity = 4
 	}
 }
 
@@ -60,21 +60,30 @@ function addInventoryItems()
 				max = weapon.InvMaxItems or 0,
 				restrict = weapon.InvRestrict or 0,
 				category = translateCategory(weapon.InvCategory),
-				clip1Max = weapon.Primary.ClipSize or -1
+				clip1max = weapon.Primary.ClipSize or -1,
+				clip1 = weapon.Primary.ClipSize or -1
 			})
 		end
 	end
 
 	for k,v in pairs(items) do
 		local item = {
-			displayName = "SETME",
+			displayname = "SETME",
 			weight = 0,
 			max = 0,
 			restrict = 0,
 			category = INVENTORY_CAT_NONE
 		}
 		table.Merge(item, v)
+		item.clip1max = item.ammoquantity
 		INVENTORY.AddItem(k, item)
 	end
 end
 hook.Add("InventoryReload", "inventory_addItems", addInventoryItems)
+
+if (game.SinglePlayer()) then
+	concommand.Add("force_inv_load", function()
+		hook.Call("InventoryReload")
+		BroadcastLua([[hook.Call("InventoryReload")]])
+	end)
+end
