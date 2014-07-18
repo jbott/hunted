@@ -74,6 +74,7 @@ function SWEP:StartReload()
    end
    
    self:SetIronsights( false )
+   if (SERVER) then self.Owner:SlowWalk(self:GetIronsights()) end
 
    if not IsFirstTimePredicted() then return false end
 
@@ -183,6 +184,7 @@ function SWEP:SecondaryAttack()
    --if self:GetNextSecondaryFire() > CurTime() then return end
 
    self:SetIronsights(not self:GetIronsights())
+   if (SERVER) then self.Owner:SlowWalk(self:GetIronsights()) end
 
    self:SetNextSecondaryFire(CurTime() + 0.3)
 end
