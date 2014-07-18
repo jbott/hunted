@@ -34,7 +34,7 @@ SWEP.Primary.Recoil      = 6
 SWEP.Primary.Damage      = 35
 SWEP.Primary.Cone        = 0.02
 
-SWEP.Primary.Ammo        = "CombineCannon"
+SWEP.Primary.Ammo        = "Pistol"
 SWEP.Primary.ClipSize    = 7
 SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize
 

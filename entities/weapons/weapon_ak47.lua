@@ -31,7 +31,7 @@ SWEP.Primary.Recoil      = 1.9
 SWEP.Primary.Damage      = 30
 SWEP.Primary.Cone        = 0.016
 
-SWEP.Primary.Ammo        = "StriderMinigun"
+SWEP.Primary.Ammo        = "AR2"
 SWEP.Primary.ClipSize    = 20
 SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize
 

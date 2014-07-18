@@ -37,7 +37,7 @@ SWEP.Primary.Damage         = 75
 SWEP.Primary.Cone           = 0.2
 SWEP.Primary.IronsightsCone = 0.002
 
-SWEP.Primary.Ammo           = "357"
+SWEP.Primary.Ammo           = "SniperRound"
 SWEP.Primary.ClipSize       = 5
 SWEP.Primary.DefaultClip    = SWEP.Primary.ClipSize
 

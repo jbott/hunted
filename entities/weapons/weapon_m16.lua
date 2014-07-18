@@ -31,7 +31,7 @@ SWEP.Primary.Recoil      = 1.6
 SWEP.Primary.Damage      = 18
 SWEP.Primary.Cone        = 0.018
 
-SWEP.Primary.Ammo        = "AirboatGun"
+SWEP.Primary.Ammo        = "AR2"
 SWEP.Primary.ClipSize    = 30
 SWEP.Primary.DefaultClip = SWEP.Primary.ClipSize
 
