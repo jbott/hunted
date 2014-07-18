@@ -193,6 +193,7 @@ function entmeta:UpdateInvAmmo()
 			ammoTotals[item.ammoname] = (ammoTotals[item.ammoname] or 0) + item.ammoquantity
 		end
 	end
+	if (table.Count(ammoTotals) == 0) then return end
 
 	for item,count in pairs(ammoTotals) do
 		local diff = self:GetAmmoCount(item) - count
