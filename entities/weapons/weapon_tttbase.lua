@@ -329,22 +329,6 @@ end
 -- The OnDrop() hook is useless for this as it happens AFTER the drop. OwnerChange
 -- does not occur when a drop happens for some reason. Hence this thing.
 function SWEP:PreDrop()
-   if SERVER and IsValid(self.Owner) and self.Primary.Ammo != "none" then
-      local ammo = self:Ammo1()
-
-      -- Do not drop ammo if we have another gun that uses this type
-      for _, w in pairs(self.Owner:GetWeapons()) do
-         if IsValid(w) and w != self and w:GetPrimaryAmmoType() == self:GetPrimaryAmmoType() then
-            ammo = 0
-         end
-      end
-
-      self.StoredAmmo = ammo
-
-      if ammo > 0 then
-         self.Owner:RemoveAmmo(ammo, self.Primary.Ammo)
-      end
-   end
 end
 
 function SWEP:DampenDrop()

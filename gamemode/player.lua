@@ -86,3 +86,8 @@ end
 function GM:PlayerDeathSound()
    return true
 end
+
+-- Don't pick up weapons on the ground automatically
+function GM:PlayerCanPickupWeapon(ply, wep)
+   return !wep.isDropped
+end

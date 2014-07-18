@@ -21,10 +21,12 @@ PLAYER.Inventory         = true
 PLAYER.InvMaxWeight      = 25
 
 PLAYER.Weapons = {
-	"weapon_nightvision"
+	"weapon_flaregun"
 }
 
-PLAYER.Ammo = {}
+PLAYER.Ammo = {
+	{"AR2AltFire", 4}
+}
 
 ---- Functions ----
 function PLAYER:GetDisplayName()

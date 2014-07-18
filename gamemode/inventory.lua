@@ -49,6 +49,17 @@ function invUse(ply, key)
 		-- No touching other player's inventories
 		if (ent:IsPlayer()) then return true end
 
+		if (ent:IsWeapon() && !ply:HasWeapon(ent:GetClass())) then
+			local class = ent:GetClass()
+			-- Pickup weapons
+			ply:InventoryAdd(class)
+			ply:GetWeapon(class):SetClip1(ent.clip1)
+			ply:GetWeapon(class):SetClip2(ent.clip2)
+			ent:Remove()
+			--ply:PickupObject(ent)
+			return false
+		end
+
 		if (ent:HasInventory()) then
 			setInventoryType(ply, INVENTORY_TYPE_ENTITY)
 			setInventoryEntity(ply, ent)
@@ -131,8 +142,9 @@ function HandleInventoryActionTakeItem(len, ply)
 			ply:InventoryTake(ent, id)
 		end
 	end
-
-	populateList(ply, INVENTORY_SIDE_LEFT)
+	if (getInventoryType(ply) != INVENTORY_TYPE_PLAYER) then
+		populateList(ply, INVENTORY_SIDE_LEFT)
+	end
 	populateList(ply, INVENTORY_SIDE_RIGHT)
 end
 net.Receive("InventoryActionTakeItem", HandleInventoryActionTakeItem)
@@ -143,6 +155,8 @@ function HandleInventoryActionDropItem(len, ply)
 
 	if (getInventoryType(ply) == INVENTORY_TYPE_SPAWN) then
 		ply:InventoryRemove(id)
+	elseif (getInventoryType(ply) == INVENTORY_TYPE_PLAYER) then
+		ply:InventoryRemove(id, true)
 	elseif (getInventoryType(ply) == INVENTORY_TYPE_ENTITY) then
 		local ent = getInventoryEntity(ply)
 		if (ent:InventoryMax() == 0) then
@@ -153,7 +167,9 @@ function HandleInventoryActionDropItem(len, ply)
 		end
 	end
 
-	populateList(ply, INVENTORY_SIDE_LEFT)
+	if (getInventoryType(ply) != INVENTORY_TYPE_PLAYER) then
+		populateList(ply, INVENTORY_SIDE_LEFT)
+	end
 	populateList(ply, INVENTORY_SIDE_RIGHT)
 end
 net.Receive("InventoryActionDropItem", HandleInventoryActionDropItem)

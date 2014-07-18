@@ -59,21 +59,22 @@ function entmeta:InventoryAdd(item)
 	if (!self:HasInventory()) then return end
 	if (self:InventoryMax() == 0 or
 		self:InventoryWeight() + INVENTORY.GetItemData(item).weight <= self:InventoryMax() and
-		self:InventoryCount(item) < INVENTORY.GetItemData(item).max) then
+		INVENTORY.GetItemData(item).max == 0 or self:InventoryCount(item) < INVENTORY.GetItemData(item).max) then
 
 		table.insert(inventoryTable[self:EntIndex()], item)
 		if (self:IsPlayer()) then
 			-- Reflect on player
 			if (INVENTORY.GetItemData(item).category == INVENTORY_CAT_PRIMARY or
 				INVENTORY.GetItemData(item).category == INVENTORY_CAT_SECONDARY) then
-					-- Weapon
-					self:Give(item)
+				-- Weapon
+				self:Give(item)
 			end
 		end
 	end
 end
 
-function entmeta:InventoryRemove(id)
+function entmeta:InventoryRemove(id, drop)
+	local drop = drop or false
 	if (!self:HasInventory()) then return end
 	local item = inventoryTable[self:EntIndex()][id] or ""
 	table.remove(inventoryTable[self:EntIndex()], id)
@@ -81,8 +82,16 @@ function entmeta:InventoryRemove(id)
 		-- Reflect on player
 		if (INVENTORY.GetItemData(item).category == INVENTORY_CAT_PRIMARY or
 			INVENTORY.GetItemData(item).category == INVENTORY_CAT_SECONDARY) then
-				-- Weapon
+			-- Weapon
+			if (drop) then
+				self:GetWeapon(item).isDropped = true
+				self:GetWeapon(item).clip1 = self:GetWeapon(item):Clip1()
+				self:GetWeapon(item).clip2 = self:GetWeapon(item):Clip2()
+				self:GetWeapon(item):PreDrop()
+				self:DropNamedWeapon(item)
+			else
 				self:StripWeapon(item)
+			end
 		end
 	end
 end
