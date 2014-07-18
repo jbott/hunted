@@ -278,14 +278,14 @@ function populateList()
 	-- Populate items
 	for k,item in pairs(inv.data) do
 		local enabled = true
-		if ((inv.filterType != 0) and (INVENTORY.GetItemData(item).category != inv.filterType)) then
+		if ((inv.filterType != 0) and (INVENTORY.GetItemData(item.name).category != inv.filterType)) then
 			enabled = false
 		end
-
-		addItem(invPanel.listLayout, INVENTORY.GetItemData(item), inv.action, function()
+		table.Merge(item, INVENTORY.GetItemData(item.name))
+		addItem(invPanel.listLayout, item, inv.action, function()
 			net.Start(inv.actionMessage)
 				net.WriteInt(k, 16)
-				net.WriteString(item)
+				net.WriteString(item.name)
 			net.SendToServer()
 		end, enabled)
 	end

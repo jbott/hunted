@@ -3,7 +3,11 @@ module("INVENTORY", package.seeall)
 local items = items or {}
 
 function GetAllItems()
-	return table.GetKeys(items)
+	local ret = {}
+	for k,v in pairs(table.GetKeys(items)) do
+		table.insert(ret, { name = v })
+	end
+	return ret
 end
 
 function GetAllItemsWithData()
