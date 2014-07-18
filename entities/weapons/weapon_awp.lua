@@ -38,7 +38,7 @@ SWEP.Primary.Cone           = 0.2
 SWEP.Primary.IronsightsCone = 0.002
 
 SWEP.Primary.Ammo           = "357"
-SWEP.Primary.ClipSize       = 3
+SWEP.Primary.ClipSize       = 5
 SWEP.Primary.DefaultClip    = SWEP.Primary.ClipSize
 
 SWEP.Primary.Sound          = Sound("Weapon_AWP.Single")
@@ -154,6 +154,6 @@ if CLIENT then
    end
 
    function SWEP:AdjustMouseSensitivity()
-      return (self:GetIronsights() and 0.2) or nil
+      return (self:GetIronsights() and 0.05) or nil
    end
 end
