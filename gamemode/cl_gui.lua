@@ -253,6 +253,13 @@ function InventoryGUI()
 		net.Start("InventoryClosed")
 		net.SendToServer()
 	end
+	frame.OnKeyCodePressed = function(self, keyCode)
+		print(keyCode)
+		if (keyCode == KEY_F1 or
+			keyCode == KEY_E) then
+			self:Close()
+		end
+	end
 	inventoryPanel.frame = frame
 
 	-- Create player panel
@@ -354,3 +361,9 @@ function populateList()
 	invPanel.scrollLayout:InvalidateLayout(true)
 end
 net.Receive("InventoryPopulateListResponse", populateList)
+
+function GM:PlayerBindPress( ply, bind, pressed )
+	if (table.Count(inventoryPanel) != 0) then
+		return true
+	end
+end
