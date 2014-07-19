@@ -34,6 +34,11 @@ end
 function PLAYER:Spawn()
 	self.Player:SetHasInventory(self.Inventory)
 	self.Player:SetInventoryMax(self.InvMaxWeight)
+	if (self.Player.SpawnInventory) then
+		for _,item in pairs(self.Player.SpawnInventory) do
+			self.Player:InventoryAdd(item.name, item)
+		end
+	end
 	self.Player:SetNightVisionSize(self.NightVisionSize)
 	-- Adjust player duck height to be more reasonable
 	self.Player:SetViewOffsetDucked(Vector(0.0, 0.0, 40.0))

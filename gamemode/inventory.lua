@@ -36,6 +36,9 @@ end
 net.Receive("InventoryOpen", HandleInventoryOpen)
 
 function HandleInventoryClosed(len, ply)
+	if (getInventoryType(ply) == INVENTORY_TYPE_SPAWN) then
+		ply.SpawnInventory = table.Copy(ply:GetInventory())
+	end
 	setInventoryType(ply, INVENTORY_TYPE_PLAYER)
 end
 net.Receive("InventoryClosed", HandleInventoryClosed)
