@@ -30,7 +30,7 @@ SWEP.ViewModelFlip = false
 SWEP.ViewModelFOV  = 54
 
 --- Primary ---
-SWEP.Primary.Automatic      = true
+SWEP.Primary.Automatic      = false
 SWEP.Primary.Delay          = 0.7
 SWEP.Primary.Recoil         = 4
 SWEP.Primary.Damage         = 50
