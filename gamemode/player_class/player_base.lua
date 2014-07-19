@@ -39,6 +39,7 @@ function PLAYER:Spawn()
 			self.Player:InventoryAdd(item.name, item)
 		end
 	end
+	self.Player:NightVision(false)
 	self.Player:SetNightVisionSize(self.NightVisionSize)
 	-- Adjust player duck height to be more reasonable
 	self.Player:SetViewOffsetDucked(Vector(0.0, 0.0, 40.0))
