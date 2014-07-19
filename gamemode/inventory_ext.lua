@@ -48,13 +48,16 @@ function entmeta:InventoryWeight()
 	return weight
 end
 
+function entmeta:InventoryCanAdd(item)
+	return (self:InventoryMax() == 0 or
+			(self:InventoryWeight() + INVENTORY.GetItemData(item).weight <= self:InventoryMax() and
+			(INVENTORY.GetItemData(item).max == 0 or self:InventoryCount(item) < INVENTORY.GetItemData(item).max)))
+end
+
 function entmeta:InventoryAdd(item, extraData)
 	if (!self:HasInventory()) then return end
 	local extraData = extraData or {}
-	if (self:InventoryMax() == 0 or
-		(self:InventoryWeight() + INVENTORY.GetItemData(item).weight <= self:InventoryMax() and
-		(INVENTORY.GetItemData(item).max == 0 or self:InventoryCount(item) < INVENTORY.GetItemData(item).max))) then
-
+	if (self:InventoryCanAdd(item)) then
 		local itemData = { name = item }
 		table.Merge(itemData, extraData)
 
@@ -78,6 +81,8 @@ function entmeta:InventoryAdd(item, extraData)
 			end
 		end
 		table.insert(self:GetInventory(), itemData)
+	else
+		return false
 	end
 	self:UpdateInventory()
 end
@@ -157,7 +162,7 @@ function entmeta:InventoryTake(ent, id)
 	if (!self:HasInventory()) then return end
 	if (!ent:HasInventory()) then return end
 	local item = ent:GetInventory()[id]
-	if (self:InventoryWeight() + INVENTORY.GetItemData(item.name).weight <= self:InventoryMax()) then
+	if (self:InventoryCanAdd(item.name)) then
 		item = ent:InventoryRemove(id) -- Allow for last minute updates to be applied to the data
 		self:InventoryAdd(item.name, item)
 	end
