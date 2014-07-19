@@ -50,6 +50,63 @@ function GM:PlayerSpawn(ply)
    ply:SetupHands()
 end
 
+function GM:DoPlayerDeath( ply, attacker, dmginfo )
+
+   local ragdoll = ents.Create("prop_ragdoll")
+   if (!IsValid(ragdoll)) then return nil end
+
+   ragdoll:SetModel(ply:GetModel())
+   ragdoll:SetPos(ply:GetPos())
+   ragdoll:SetAngles(ply:GetAngles())
+   ragdoll:SetColor(ply:GetColor())
+   ragdoll:SetName(ply:GetName())
+
+   ragdoll:Spawn()
+   ragdoll:Activate()
+
+   ragdoll:SetHasInventory(true)
+   ragdoll:SetInventoryMax(ply:InventoryMax())
+   ply:UpdateInventory()
+   ragdoll.Inventory = ply:GetInventory()
+
+   -- nonsolid to players to prevent
+   ragdoll:SetCollisionGroup(COLLISION_GROUP_DEBRIS_TRIGGER)
+
+   -- position the bones and apply velocity
+   local num = ragdoll:GetPhysicsObjectCount()-1
+   local v = ply:GetVelocity()
+
+   -- bullets have a lot of force, which feels better when shooting props,
+   -- but makes bodies fly, so dampen that here
+   if dmginfo:IsDamageType(DMG_BULLET) or dmginfo:IsDamageType(DMG_SLASH) then
+      v = v / 5
+   end
+
+   for i=0, num do
+      local bone = ragdoll:GetPhysicsObjectNum(i)
+      if IsValid(bone) then
+         local bp, ba = ply:GetBonePosition(ragdoll:TranslatePhysBoneToBone(i))
+         if bp and ba then
+            bone:SetPos(bp)
+            bone:SetAngles(ba)
+         end
+
+         -- not sure if this will work:
+         bone:SetVelocity(v)
+      end
+   end
+
+   ply:AddDeaths(1)
+
+   if ( attacker:IsValid() && attacker:IsPlayer() ) then
+      if ( attacker == ply ) then
+         attacker:AddFrags(-1)
+      else
+         attacker:AddFrags(1)
+      end
+   end
+end
+
 -- Disable NoClipping
 function GM:PlayerNoClip(ply, desiredState)
    if !desiredState then return true end
